@@ -1,58 +1,42 @@
 # Auria 个人网站
 
-Auria 是一个中文产品经理与 AI 产品作品集，包含前台作品、文章、关于、联系页面，以及基于 SQLite 的管理后台。
+中文 AI 产品作品集：作品、开源项目、文章、简历 PDF、数字分身、互动池塘，以及可编辑上述内容的 SQLite 管理后台。当前配色、布局和交互随源码保存。
 
-## 技术栈
+## 在另一台电脑恢复当前网站
 
-- Vite 8 + React 19 + TypeScript 5
-- Tailwind CSS 4
-- Express 5
-- SQLite（`better-sqlite3`）
-- Node.js 22.23.x，npm 10.x
+安装 Git、Node.js **22.22.0**（版本见 `.nvmrc`，npm 10），然后执行：
 
-## 快速开始
+```sh
+git clone https://github.com/2392772541/auria-portfolio.git
+cd auria-portfolio
+npm ci
+npm run content:restore
+npm run setup:admin
+npm run build
+npm start
+```
 
-1. 安装 Node.js 22 LTS。
-2. 在项目根目录运行 `npm ci`。
-3. 复制 `.env.example` 为 `.env`，按需填写本地配置。
-4. 如需恢复服务器内容，按照 `MIGRATION.md` 将 `migration-data/auria.sqlite` 和 `migration-data/uploads/` 复制到 `data/`。
-5. 运行 `npm run dev` 开发前端，或运行 `npm run build` 后执行 `npm start` 启动完整网站。
+这是私有仓库，需要有访问权限的 GitHub 账号。`setup:admin` 会隐藏输入密码，并创建本机 `.env`；密码至少12位，不会上传到 Git。
 
-默认完整网站地址为 `http://127.0.0.1:3000`，后台为 `http://127.0.0.1:3000/?page=admin`。
+打开网站：<http://127.0.0.1:3101/>；后台：<http://127.0.0.1:3101/?page=admin>。终端保持运行。不需要旧电脑路径、单独的池塘服务、SQLite 命令行或复制 `node_modules`。
 
-## 常用命令
+`content:restore` 还原仓库内 `portable/` 的内容和7个附件，并校验 SHA256。已有数据库时会拒绝覆盖。后台编辑保存在本机 `data/`；Git 拉取代码不会覆盖你的新内容。迁移新内容见 [MIGRATION.md](MIGRATION.md)。
 
-- `npm ci`：按锁文件安装依赖。
-- `npm run dev`：Vite 前端开发服务器。
-- `npm run build`：TypeScript 检查并构建前后端产物。
-- `npm start`：启动 Express 正式服务。
-- `npm run backup`：一致性备份 SQLite 和上传文件。
+## 恢复范围
 
-## 环境变量
+- 源码、锁文件、静态图片和视频、池塘交互、上传图片和简历 PDF。
+- 作品和文章（包括草稿）、品牌联系信息、首页及内页配置、数字分身提示词/知识/预设问答。
+- 不上传管理员凭据、API 密钥、登录会话、访客留言和日志。完整私密数据备份使用 `npm run backup`，通过私密渠道迁移。
+- 数字分身的在线模型和飞书通知需在新电脑 `.env` 单独配置；没配置密钥时数字分身按现有预设/降级逻辑工作。外链 Demo、远程图片/视频及 Google 字体仍需要网络，第三方服务可用性不由本仓库保证。
 
-完整变量名见 `.env.example`。管理员密码必须通过 `node scripts/generate-password-hash.mjs` 在本机隐藏输入生成，不要填写明文密码。飞书三项配置是可选项；未配置时联系信息仍会写入数据库，只是不发送飞书通知。
+## 技术与命令
 
-## 数据与附件
+React 19、TypeScript 5、Vite 8、Express 5、better-sqlite3。完整运行入口是 `server/index.mjs`，页面构建到 `dist/client`；不要只部署静态目录，否则后台不可用。仓库内 Worker/Cloudflare 文件为历史入口，不是当前服务部署方式。
 
-- 本地数据库：`data/auria.sqlite`
-- 本地上传目录：`data/uploads/`
-- 服务器内容快照：`migration-data/`
+- `npm run build`：类型检查和构建；改前端后重新构建。
+- `npm start`：启动完整前后台，读取本机 `.env`。
+- `npm run backup`：备份数据库和上传目录，无需额外安装 sqlite3。
+- `npm run content:export -- portable-next`：导出新的可提交内容快照（不覆盖旧目录）。
+- `npm run test:cms`：独立数据副本验证前后台联动；需 Playwright 与 Chrome，详见脚本。
 
-数据库和上传目录必须成对备份。迁移快照已清除登录 Session，不含生产密码、Token 或证书。
-
-## 当前服务器部署基线
-
-- 域名：`https://gz.grzdt.com`
-- 反向代理：Caddy → `127.0.0.1:3000`
-- 服务：systemd `auria-hero.service`
-- 正式代码：`/opt/auria-hero/releases/20260824-150611`
-- 正式数据：`/var/lib/auria-hero/data`
-
-这些服务器绝对路径只是当前部署记录，不是本地运行依赖。新电脑按 `MIGRATION.md` 恢复；生产部署模板见 `deployment/`。
-
-## 更多文档
-
-- `MIGRATION.md`：跨电脑恢复流程。
-- `DEVELOPMENT.md`：开发约定。
-- `DEPLOYMENT.md`：Linux/Caddy/systemd 部署。
-- `docs/PRODUCTION-BASELINE.md`：本次快照来源与差异说明。
+详细说明：[跨电脑迁移](MIGRATION.md)、[前后台对应审查](docs/ADMIN-FRONTEND-AUDIT.md)、[开发约定](DEVELOPMENT.md)。`DEPLOYMENT.md` 和旧服务器基线文件是历史参考，不代表当前远端部署状态。

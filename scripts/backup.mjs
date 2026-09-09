@@ -1,49 +1,30 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { execFileSync, spawnSync } from 'node:child_process';
+import crypto from 'node:crypto';
+import Database from 'better-sqlite3';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const root = path.resolve(import.meta.dirname, '..');
 const dataDir = path.resolve(process.env.AURIA_DATA_DIR || path.join(root, 'data'));
 const backupRoot = path.resolve(process.env.AURIA_BACKUP_DIR || path.join(root, 'backups'));
-const stamp = new Date().toISOString().replace(/[:.]/g, '-');
-const target = path.join(backupRoot, stamp);
-const dbPath = path.join(dataDir, 'auria.sqlite');
-const uploads = path.join(dataDir, 'uploads');
-
-if (!fs.existsSync(dbPath)) throw new Error(`数据库不存在: ${dbPath}`);
-fs.mkdirSync(target, { recursive: true, mode: 0o700 });
-const sqliteBin = process.env.SQLITE3_BIN || 'sqlite3';
-const integrity = execFileSync(sqliteBin, [dbPath, 'PRAGMA integrity_check;'], { encoding: 'utf8' }).trim();
-if (integrity !== 'ok') throw new Error(`SQLite integrity_check failed: ${integrity}`);
-const snapshot = path.join(target, 'auria.sqlite');
-const sqliteSnapshot = snapshot.replaceAll('\\', '/').replaceAll("'", "''");
-execFileSync(sqliteBin, [dbPath, `.backup '${sqliteSnapshot}'`], { stdio: 'pipe' });
-const snapshotIntegrity = execFileSync(sqliteBin, [snapshot, 'PRAGMA integrity_check;'], { encoding: 'utf8' }).trim();
-if (snapshotIntegrity !== 'ok') throw new Error(`Backup integrity_check failed: ${snapshotIntegrity}`);
-if (fs.existsSync(uploads)) {
-  const uploadBackup = path.join(target, 'uploads');
-  if (process.platform === 'win32') {
-    const copy = spawnSync('robocopy', [uploads, uploadBackup, '/E', '/COPY:DAT', '/R:2', '/W:1', '/NFL', '/NDL', '/NJH', '/NJS', '/NP'], { stdio: 'pipe' });
-    if (copy.error || copy.status === null || copy.status > 7) {
-      throw copy.error || new Error(`robocopy failed with exit code ${copy.status}: ${copy.stderr?.toString() || ''}`);
-    }
-  } else {
-    fs.cpSync(uploads, uploadBackup, { recursive: true });
-    for (const entry of fs.readdirSync(uploadBackup, { recursive: true })) {
-      const item = path.join(uploadBackup, entry);
-      if (fs.existsSync(item)) fs.chmodSync(item, fs.statSync(item).isDirectory() ? 0o700 : 0o600);
-    }
+const target = path.join(backupRoot, new Date().toISOString().replace(/[:.]/g, '-'));
+fs.mkdirSync(target, {recursive: true, mode: 0o700});
+const db = new Database(path.join(dataDir, 'auria.sqlite'), {readonly: true});
+try {
+  if (db.pragma('integrity_check', {simple: true}) !== 'ok') throw new Error('数据库校验失败');
+  await db.backup(path.join(target, 'auria.sqlite'));
+} finally { db.close(); }
+function copy(source, dest) {
+  fs.mkdirSync(dest, {recursive: true, mode: 0o700});
+  for (const entry of fs.readdirSync(source, {withFileTypes: true})) {
+    if (entry.isSymbolicLink()) throw new Error('备份附件不允许符号链接');
+    if (entry.isDirectory()) copy(path.join(source, entry.name), path.join(dest, entry.name));
+    else fs.writeFileSync(path.join(dest, entry.name), fs.readFileSync(path.join(source, entry.name)), {mode: 0o600});
   }
 }
-const manifest = {
-  created_at: new Date().toISOString(),
-  data_dir: dataDir,
-  database: { path: snapshot, integrity_check: snapshotIntegrity },
-  uploads: fs.existsSync(uploads) ? fs.readdirSync(uploads).length : 0,
-};
-fs.writeFileSync(path.join(target, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n', { mode: 0o600 });
-try { execFileSync('sha256sum', ['-b', snapshot], { stdio: 'inherit' }); } catch { /* manifest remains usable without sha256sum */ }
-console.log(`BACKUP_DIR=${target}`);
-console.log(`DATABASE_INTEGRITY=${integrity}`);
-console.log(`UPLOAD_ENTRIES=${manifest.uploads}`);
+copy(path.join(dataDir, 'uploads'), path.join(target, 'uploads'));
+const check = new Database(path.join(target, 'auria.sqlite'), {readonly: true});
+const integrity = check.pragma('integrity_check', {simple: true});
+check.close();
+if (integrity !== 'ok') throw new Error('备份校验失败');
+fs.writeFileSync(path.join(target, 'manifest.json'), JSON.stringify({createdAt: new Date().toISOString(), integrity, databaseSha256: crypto.createHash('sha256').update(fs.readFileSync(path.join(target, 'auria.sqlite'))).digest('hex')}, null, 2) + '\n', {mode: 0o600});
+console.log('BACKUP_DIR=' + target + '\nDATABASE_INTEGRITY=' + integrity);

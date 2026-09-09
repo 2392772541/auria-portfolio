@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "contentSha256": "da0e04c569df04bd69409969bfcf5509e7c4ede912644b1563140d7b9ff4308c",
+  "uploads": [
+    {
+      "name": "1788180286456-1b733e28-5fbd-40d0-9a92-b1eb19e37fbc-og.png",
+      "size": 1129400,
+      "sha256": "b6063abf441d29f335fb8898236df0b0036ac4abf0690e1a95ed6c6c9983c583"
+    },
+    {
+      "name": "1788486826728-d4c202f8-5d37-480c-bcc2-83e99a304ae1-auria-resume-qa.pdf",
+      "size": 445,
+      "sha256": "1a7bbbe6f46f83e153534dea7558aa84bf34c3fb6295e64650be8afca0684b80"
+    },
+    {
+      "name": "1788488253135-0d2e6561-f473-4bbe-9902-9f3e19a46190-XiaoYang-Demo-Resume.pdf",
+      "size": 226788,
+      "sha256": "ebf912fc23e62e8eba1cc86222d703fd66a06962f437722de926b4974e67d14c"
+    },
+    {
+      "name": "1788488700428-9ea614ec-a26e-4312-abd2-af6fd5ff7bfe-XiaoYang-Demo-Resume.pdf",
+      "size": 221550,
+      "sha256": "38c926f829f8cc0c2f46e7c4521f76f9f367419a13d65c4732b8e4f9a7ce06a9"
+    },
+    {
+      "name": "1788489552951-faac44df-a883-4762-b676-ccf14f4795a7-auria-resume-qa.pdf",
+      "size": 445,
+      "sha256": "1a7bbbe6f46f83e153534dea7558aa84bf34c3fb6295e64650be8afca0684b80"
+    },
+    {
+      "name": "1788497601040-61a12125-8c9c-403f-bd23-50c34968748f-auria-resume-qa.pdf",
+      "size": 445,
+      "sha256": "1a7bbbe6f46f83e153534dea7558aa84bf34c3fb6295e64650be8afca0684b80"
+    },
+    {
+      "name": "1788497983849-8ccb361f-c1d1-49e9-8168-e01a6599169a-og.png",
+      "size": 1129400,
+      "sha256": "b6063abf441d29f335fb8898236df0b0036ac4abf0690e1a95ed6c6c9983c583"
+    }
+  ],
+  "excluded": [
+    "sessions",
+    "contacts",
+    ".env",
+    "credentials",
+    "logs"
+  ]
+}
