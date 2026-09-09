@@ -1,0 +1,1437 @@
+.xiaoyang-hero {
+  height: 100dvh;
+  min-height: 680px;
+  position: relative;
+  overflow: hidden;
+  background: #07110f;
+  color: #f5f7f0;
+  font-family: var(--font-sans, "Arial", sans-serif);
+}
+.xiaoyang-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #06100dcc 0%, #06100d66 42%, #06100d22 100%),
+    linear-gradient(0deg, #040907d9 0%, transparent 38%),
+    url("/xiaoyang-cloud.jpg") center/cover no-repeat;
+  transform: scale(1.04);
+  animation: xiao-zoom 16s ease-out both;
+}
+.xiaoyang-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
+.xiaoyang-nav {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  width: min(1240px, calc(100% - 48px));
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px 0 16px;
+  border: 1px solid #e3f8df2b;
+  border-radius: 999px;
+  background: #12221fb8;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 28px #0003;
+}
+.xiaoyang-logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #07100c;
+  background: #b7ff22;
+  border-radius: 999px;
+  padding: 9px 18px;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  box-shadow: 0 0 22px #9cff2c66;
+}
+.xiaoyang-logo b {
+  font-size: 14px;
+}
+.xiaoyang-face {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #07100c;
+  color: #b7ff22;
+  font-size: 8px;
+}
+.xiaoyang-navlinks {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.xiaoyang-navlinks a {
+  color: #e5eee6c7;
+  text-decoration: none;
+  font-size: 12px;
+  transition: color 0.2s;
+}
+.xiaoyang-navlinks a:hover {
+  color: #b7ff22;
+}
+.xiaoyang-navlinks .xiaoyang-contact {
+  border: 1px solid #e3f8df55;
+  border-radius: 999px;
+  padding: 8px 17px;
+  color: #fff;
+  background: #ffffff12;
+}
+.xiaoyang-menu {
+  display: none;
+  border: 0;
+  color: #eaffdf;
+  background: #ffffff14;
+  border-radius: 999px;
+  padding: 8px;
+}
+.xiaoyang-intro {
+  position: absolute;
+  z-index: 2;
+  top: 28%;
+  left: clamp(28px, 17vw, 330px);
+  max-width: 700px;
+}
+.xiaoyang-kicker {
+  margin: 0 0 10px;
+  color: #c3ff36;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+.xiaoyang-intro h1 {
+  margin: 0;
+  color: #b7ff22;
+  font-size: clamp(56px, 8vw, 132px);
+  line-height: 0.84;
+  letter-spacing: -0.055em;
+  font-weight: 850;
+  text-shadow: 0 4px 24px #0006;
+}
+.xiaoyang-intro h1 span {
+  display: inline-block;
+  margin-left: 14px;
+  font-size: 0.55em;
+  vertical-align: top;
+  transform: translateY(-0.1em);
+  animation: xiao-twinkle 2.2s ease-in-out infinite;
+}
+.xiaoyang-intro h2 {
+  margin: 10px 0 16px;
+  color: #f7f9f5;
+  font-size: clamp(34px, 4.6vw, 76px);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+}
+.xiaoyang-intro h2 em {
+  color: #b7ff22;
+  font:
+    italic 400 0.34em Georgia,
+    serif;
+  letter-spacing: 0;
+  margin-left: 8px;
+}
+.xiaoyang-tagline {
+  max-width: 430px;
+  margin: 0;
+  color: #f1f6f0dd;
+  font-size: 17px;
+  line-height: 1.55;
+}
+.xiaoyang-strip {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  padding: 0 28px 22px;
+  overflow: hidden;
+  background: linear-gradient(0deg, #050a09d9 0%, #050a0900 100%);
+}
+.xiaoyang-card {
+  position: relative;
+  flex: 0 0 clamp(150px, 13vw, 220px);
+  height: clamp(170px, 22vh, 240px);
+  overflow: hidden;
+  border: 2px solid #e7f1df33;
+  border-radius: 16px;
+  background: #1d2924;
+  box-shadow: 0 12px 28px #0007;
+  transition:
+    transform 0.3s,
+    border-color 0.3s;
+}
+.xiaoyang-card:nth-child(2n) {
+  height: clamp(145px, 18vh, 205px);
+}
+.xiaoyang-card:hover {
+  transform: translateY(-13px) rotate(-1deg);
+  border-color: #b7ff2299;
+}
+.xiaoyang-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.8);
+  transition: transform 0.5s;
+}
+.xiaoyang-card:hover img {
+  transform: scale(1.08);
+}
+.xiaoyang-card-index {
+  position: absolute;
+  z-index: 1;
+  right: 9px;
+  top: 8px;
+  color: #efffe8;
+  background: #07100c99;
+  border-radius: 999px;
+  padding: 3px 7px;
+  font: 600 9px var(--font-sans);
+}
+.xiaoyang-scroll {
+  position: absolute;
+  z-index: 3;
+  right: 24px;
+  bottom: 32%;
+  writing-mode: vertical-rl;
+  color: #e9f4e8a8;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.home-cyber .xiaoyang-hero ~ .proof {
+  border-top: 0;
+}
+@keyframes xiao-zoom {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes xiao-twinkle {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translateY(-0.1em) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-0.15em) scale(1.08);
+  }
+}
+@media (max-width: 760px) {
+  .xiaoyang-hero {
+    min-height: 650px;
+  }
+  .xiaoyang-nav {
+    top: 12px;
+    width: calc(100% - 24px);
+    height: 48px;
+    padding-left: 10px;
+  }
+  .xiaoyang-logo {
+    padding: 8px 14px;
+  }
+  .xiaoyang-logo b {
+    font-size: 12px;
+  }
+  .xiaoyang-navlinks {
+    display: none;
+    position: absolute;
+    top: 55px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 14px 18px;
+    border: 1px solid #dff5dc33;
+    border-radius: 18px;
+    background: #10201deb;
+    backdrop-filter: blur(18px);
+  }
+  .xiaoyang-navlinks.is-open {
+    display: flex;
+  }
+  .xiaoyang-navlinks a {
+    padding: 13px 4px;
+    border-bottom: 1px solid #dff5dc1d;
+  }
+  .xiaoyang-navlinks .xiaoyang-contact {
+    text-align: center;
+    margin-top: 10px;
+    border: 0;
+    background: #b7ff22;
+    color: #08100a;
+  }
+  .xiaoyang-menu {
+    display: block;
+  }
+  .xiaoyang-intro {
+    top: 25%;
+    left: 22px;
+    right: 22px;
+  }
+  .xiaoyang-intro h1 {
+    font-size: clamp(54px, 17vw, 80px);
+  }
+  .xiaoyang-intro h2 {
+    font-size: clamp(35px, 11vw, 52px);
+  }
+  .xiaoyang-tagline {
+    font-size: 14px;
+    max-width: 310px;
+  }
+  .xiaoyang-strip {
+    gap: 11px;
+    padding: 0 16px 16px;
+  }
+  .xiaoyang-card {
+    flex-basis: 120px;
+    height: 145px;
+    border-radius: 12px;
+  }
+  .xiaoyang-card:nth-child(2n) {
+    height: 128px;
+  }
+  .xiaoyang-strip .xiaoyang-card:nth-child(n + 6) {
+    display: none;
+  }
+  .xiaoyang-scroll {
+    display: none;
+  }
+}
+.xiaoyang-backdrop {
+  transform: translate3d(var(--mx, 0), var(--my, 0), 0) scale(1.04);
+  transition: transform 0.25s ease-out;
+}
+.xiaoyang-nav {
+  animation: xiao-nav-in 0.8s 0.15s both;
+}
+.xiaoyang-intro {
+  animation: xiao-intro-in 1s 0.25s both;
+}
+.xiaoyang-card {
+  animation: xiao-card-in 0.75s both;
+}
+.xiaoyang-card:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.xiaoyang-card:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.xiaoyang-card:nth-child(4) {
+  animation-delay: 0.24s;
+}
+.xiaoyang-card:nth-child(5) {
+  animation-delay: 0.32s;
+}
+.xiaoyang-card:nth-child(6) {
+  animation-delay: 0.4s;
+}
+.xiaoyang-card:nth-child(7) {
+  animation-delay: 0.48s;
+}
+.xiaoyang-card:nth-child(8) {
+  animation-delay: 0.56s;
+}
+@keyframes xiao-nav-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -18px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+@keyframes xiao-intro-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes xiao-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(55px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.xiaoyang-hero:before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 3%;
+  bottom: 17%;
+  width: min(28vw, 420px);
+  height: min(34vw, 470px);
+  background: url("/xiaoyang-cottage.jpg") left center/cover no-repeat;
+  opacity: 0.72;
+  mix-blend-mode: screen;
+  filter: saturate(0.85);
+  pointer-events: none;
+}
+.xiaoyang-hero:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 48%;
+  bottom: 13%;
+  width: min(25vw, 390px);
+  height: min(25vw, 390px);
+  background: url("/xiaoyang-sheep.jpg") center top/cover no-repeat;
+  opacity: 0.8;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.xiaoyang-strip {
+  animation: xiao-strip-drift 24s ease-in-out infinite alternate;
+}
+.xiaoyang-strip:hover {
+  animation-play-state: paused;
+}
+@keyframes xiao-strip-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-18px);
+  }
+}
+@media (max-width: 760px) {
+  .xiaoyang-hero:before {
+    left: -18%;
+    bottom: 18%;
+    width: 58vw;
+    height: 58vw;
+    opacity: 0.45;
+  }
+  .xiaoyang-hero:after {
+    left: 42%;
+    bottom: 18%;
+    width: 52vw;
+    height: 52vw;
+    opacity: 0.5;
+  }
+}
+/* Keep the duplicated track intact on narrow screens so the marquee never reaches a blank gap. */
+@media (max-width: 760px) {
+  .xiaoyang-strip .xiaoyang-card:nth-child(n + 6) {
+    display: block;
+  }
+}
+/* Match the reference video's 16:9 viewport: keep the hero one screen tall while retaining a desktop floor. */
+@media (min-width: 761px) {
+  .xiaoyang-hero {
+    min-height: 540px;
+  }
+}
+@media (min-width: 761px) {
+  .xiaoyang-card {
+    height: clamp(130px, 22vh, 240px);
+  }
+  .xiaoyang-card:nth-child(2n) {
+    height: clamp(115px, 18vh, 205px);
+  }
+}
+@media (min-width: 761px) {
+  .xiaoyang-intro {
+    top: 20%;
+  }
+}
+.xiaoyang-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  background: #050908d9;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.55s ease;
+}
+.xiaoyang-loader.is-visible {
+  opacity: 1;
+}
+.xiaoyang-loader small {
+  position: absolute;
+  top: 43%;
+  color: #d8e8d2a8;
+  font: 500 10px/1 var(--font-sans, "Arial", sans-serif);
+  letter-spacing: 0.24em;
+}
+.xiaoyang-loader strong {
+  position: absolute;
+  color: #b7ff22;
+  font: 800 clamp(64px, 10vw, 150px)/1 var(--font-sans, "Arial", sans-serif);
+  letter-spacing: -0.06em;
+  text-shadow: 0 0 28px #b7ff2270;
+}
+.xiaoyang-loader span {
+  position: absolute;
+  bottom: 16%;
+  left: 50%;
+  width: min(260px, 35vw);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b7ff22, transparent);
+  transform: translateX(-50%);
+  animation: xiao-loader-line 1s ease-in-out infinite;
+}
+@keyframes xiao-loader-line {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateX(-50%) scaleX(0.35);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1);
+  }
+}
+.xiaoyang-backdrop {
+  background-image:
+    linear-gradient(90deg, #06100d99 0%, #06100d42 42%, #06100d16 100%),
+    linear-gradient(0deg, #040907d9 0%, transparent 42%),
+    url("/xiaoyang-hero-scene.png");
+  animation:
+    xiao-zoom 16s ease-out both,
+    xiao-light 14s ease-in-out 1s infinite alternate;
+}
+.xiaoyang-night {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, #07172a42, #02060dcc),
+    url("/xiaoyang-hero-night.png") center/cover no-repeat;
+  opacity: 0;
+  mix-blend-mode: normal;
+  pointer-events: none;
+  animation: xiao-night-cycle 14s ease-in-out 1.2s infinite alternate;
+}
+@keyframes xiao-night-cycle {
+  0%,
+  24% {
+    opacity: 0;
+  }
+  56%,
+  100% {
+    opacity: 0.76;
+  }
+}
+@keyframes xiao-light {
+  from {
+    filter: brightness(0.82) saturate(0.92);
+  }
+  to {
+    filter: brightness(1.03) saturate(1.05);
+  }
+}
+.xiaoyang-strip {
+  will-change: transform;
+}
+.xiaoyang-strip:hover {
+  animation-play-state: paused;
+}
+.xiaoyang-hero:before,
+.xiaoyang-hero:after {
+  display: none;
+}
+.xiaoyang-nav {
+  position: fixed;
+}
+.xiaoyang-navlinks a.is-active {
+  color: #b7ff22;
+  text-shadow: 0 0 14px #b7ff2266;
+}
+.xiaoyang-navlinks a.is-active:after {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: 5px;
+  background: #b7ff22;
+  box-shadow: 0 0 10px #b7ff22;
+}
+@media (prefers-reduced-motion: reduce) {
+  .xiaoyang-backdrop,
+  .xiaoyang-night,
+  .xiaoyang-nav,
+  .xiaoyang-intro,
+  .xiaoyang-card,
+  .xiaoyang-strip,
+  .xiaoyang-scroll:before,
+  .xiaoyang-scroll svg {
+    animation: none !important;
+    transition: none !important;
+  }
+  .xiaoyang-backdrop {
+    transform: none !important;
+    filter: none !important;
+  }
+  .xiaoyang-night {
+    opacity: 0 !important;
+  }
+}
+.xiaoyang-strip {
+  width: max-content;
+  right: auto;
+  min-width: 100%;
+  animation: xiao-strip-marquee 30s linear infinite;
+}
+.xiaoyang-strip:hover {
+  animation-play-state: paused;
+}
+.xiaoyang-strip:focus-within {
+  animation-play-state: paused;
+}
+@keyframes xiao-strip-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .xiaoyang-strip {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Mobile navigation should unfold as a small surface, matching the staged
+   entrance used by the desktop navigation instead of appearing abruptly. */
+@media (max-width: 760px) {
+  .xiaoyang-navlinks.is-open {
+    animation: xiao-mobile-menu-in 0.28s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    transform-origin: top;
+  }
+  .xiaoyang-navlinks.is-open a {
+    animation: xiao-mobile-link-in 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .xiaoyang-navlinks.is-open a:nth-child(2) {
+    animation-delay: 45ms;
+  }
+  .xiaoyang-navlinks.is-open a:nth-child(3) {
+    animation-delay: 90ms;
+  }
+  .xiaoyang-navlinks.is-open a:nth-child(4) {
+    animation-delay: 135ms;
+  }
+}
+@keyframes xiao-mobile-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scaleY(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes xiao-mobile-link-in {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.xiaoyang-scroll:before {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 46px;
+  background: linear-gradient(180deg, #b7ff22, transparent);
+  animation: xiao-scroll-line 2.4s ease-in-out infinite;
+}
+.xiaoyang-scroll svg {
+  animation: xiao-scroll-arrow 2.4s ease-in-out infinite;
+}
+@keyframes xiao-scroll-line {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scaleY(0.65);
+    transform-origin: top;
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+@keyframes xiao-scroll-arrow {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translateY(5px);
+    opacity: 1;
+  }
+}
+@supports (animation-timeline: scroll()) {
+  .xiaoyang-intro {
+    animation-name: xiao-intro-in, xiao-hero-copy-scroll;
+    animation-duration: 1s, 1ms;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1), linear;
+    animation-fill-mode: both, both;
+    animation-timeline: auto, scroll(root block);
+    animation-range:
+      auto,
+      0 720px;
+  }
+  .xiaoyang-strip {
+    animation-name: xiao-strip-drift, xiao-hero-strip-scroll;
+    animation-duration: 24s, 1ms;
+    animation-timing-function: ease-in-out, linear;
+    animation-fill-mode: both, both;
+    animation-timeline: auto, scroll(root block);
+    animation-range:
+      auto,
+      0 720px;
+  }
+  @keyframes xiao-hero-copy-scroll {
+    from {
+      translate: 0 0;
+      opacity: 1;
+    }
+    to {
+      translate: 0 -44px;
+      opacity: 0.18;
+    }
+  }
+  @keyframes xiao-hero-strip-scroll {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: 0 -18px;
+    }
+  }
+}
+
+.digital-avatar-status i {
+  animation: none;
+}
+.digital-avatar-status.is-thinking i {
+  animation: avatar-pulse 0.8s ease-in-out infinite;
+}
+.digital-avatar-status.is-retry {
+  color: #ffc5b4;
+}
+.digital-avatar-status.is-retry i {
+  background: #ff9270;
+  box-shadow: 0 0 10px #ff9270;
+}
+
+/* 首页文本数字分身：紧凑入口留在标题下方，展开层覆盖在作品轨道上方。 */
+.xiaoyang-intro:has(.digital-avatar.is-open) {
+  z-index: 4;
+}
+.digital-avatar {
+  position: relative;
+  z-index: 7;
+  width: min(430px, calc(100vw - 44px));
+  margin-top: 18px;
+  border: 1px solid #dfffcf38;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #0b1815e8, #101f1be0);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 18px 50px #0008,
+    0 0 0 1px #b7ff2208;
+  overflow: visible;
+  animation: avatar-in 0.7s 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.digital-avatar-head {
+  width: 100%;
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  border: 0;
+  color: #eff8ed;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.digital-avatar-orb {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #07100e;
+  background: #b7ff22;
+  box-shadow: 0 0 24px #b7ff225c;
+}
+.digital-avatar-head > span:nth-child(2) {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+.digital-avatar-head b {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.digital-avatar-head small {
+  color: #9eb3a3;
+  font-size: 8px;
+  letter-spacing: 0.16em;
+}
+.digital-avatar-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #b7ff22;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+}
+.digital-avatar-status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #b7ff22;
+  box-shadow: 0 0 10px #b7ff22;
+  animation: avatar-pulse 1.8s ease-in-out infinite;
+}
+.digital-avatar-entry {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 14px 12px;
+  border: 0;
+  color: #c9d8cd;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.digital-avatar-entry span {
+  max-width: 290px;
+  font-size: 11px;
+  line-height: 1.45;
+}
+.digital-avatar-entry b {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  color: #b7ff22;
+  font-size: 10px;
+}
+.digital-avatar-panel {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  width: 100%;
+  border: 1px solid #dfffcf38;
+  border-radius: 18px;
+  background: #07120ff2;
+  backdrop-filter: blur(22px);
+  box-shadow: 0 24px 70px #000b;
+  overflow: hidden;
+  animation: avatar-panel-in 0.28s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.digital-avatar-messages {
+  max-height: 230px;
+  min-height: 150px;
+  overflow: auto;
+  padding: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: #b7ff2255 transparent;
+}
+.digital-avatar-messages p {
+  max-width: 88%;
+  margin: 0 0 9px;
+  padding: 9px 11px;
+  border-radius: 12px;
+  color: #dce8df;
+  background: #ffffff0c;
+  font-size: 11px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+.digital-avatar-messages p span {
+  display: block;
+  margin-bottom: 3px;
+  color: #b7ff22;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+.digital-avatar-messages p.user {
+  margin-left: auto;
+  color: #0a120d;
+  background: #b7ff22;
+}
+.digital-avatar-messages p.user span {
+  color: #2d480d;
+}
+.digital-avatar-messages p.thinking {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #9fb1a4;
+}
+.digital-avatar-form {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid #dfffcf20;
+}
+.digital-avatar-form input {
+  min-width: 0;
+  flex: 1;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #dfffcf28;
+  border-radius: 11px;
+  outline: none;
+  color: #f2f8f0;
+  background: #ffffff0a;
+  font: 11px var(--font-sans, "Arial", sans-serif);
+}
+.digital-avatar-form input:focus {
+  border-color: #b7ff22;
+  box-shadow: 0 0 0 3px #b7ff2214;
+}
+.digital-avatar-form input::placeholder {
+  color: #829589;
+}
+.digital-avatar-form button {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 11px;
+  color: #07100e;
+  background: #b7ff22;
+  cursor: pointer;
+}
+.digital-avatar-form button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.digital-avatar-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 12px 12px;
+}
+.digital-avatar-actions > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.digital-avatar-actions button {
+  padding: 6px 8px;
+  border: 1px solid #b7ff2238;
+  border-radius: 999px;
+  color: #c8d7cc;
+  background: #b7ff2208;
+  font-size: 8px;
+  cursor: pointer;
+}
+.digital-avatar-actions button:hover {
+  border-color: #b7ff22;
+  color: #b7ff22;
+}
+.digital-avatar-actions .digital-avatar-reset {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+.digital-avatar-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 12px 8px;
+  padding: 8px 10px;
+  border: 1px solid #ff927055;
+  border-radius: 10px;
+  color: #ffc5b4;
+  background: #5e1e1426;
+  font-size: 9px;
+}
+.digital-avatar-error button {
+  border: 0;
+  color: #b7ff22;
+  background: transparent;
+  cursor: pointer;
+}
+@keyframes avatar-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes avatar-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes avatar-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+@media (max-width: 760px) {
+  .xiaoyang-intro {
+    top: 17%;
+  }
+  .digital-avatar {
+    margin-top: 12px;
+    width: min(360px, calc(100vw - 44px));
+  }
+  .digital-avatar-head {
+    min-height: 48px;
+    padding: 7px 9px;
+  }
+  .digital-avatar-orb {
+    width: 31px;
+    height: 31px;
+  }
+  .digital-avatar-entry {
+    padding: 0 11px 10px;
+  }
+  .digital-avatar-entry span {
+    max-width: 210px;
+    font-size: 10px;
+  }
+  .digital-avatar-panel {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: 14px;
+    width: auto;
+    z-index: 20;
+  }
+  .digital-avatar-messages {
+    max-height: 35vh;
+  }
+  .digital-avatar-status {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .digital-avatar,
+  .digital-avatar-status i,
+  .digital-avatar-panel {
+    animation: none !important;
+  }
+  .digital-avatar-messages {
+    scroll-behavior: auto;
+  }
+}
+
+/* Keep the card rail as a true looping marquee. The scroll-linked transform above
+   would replace this animation in Chromium instead of composing with it. */
+@supports (animation-timeline: scroll()) {
+  .xiaoyang-strip {
+    animation-name: xiao-strip-marquee;
+    animation-duration: 30s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-timeline: auto;
+    animation-range: auto;
+  }
+}
+
+/* Hero project ribbon: the viewport stays fixed while only the inner track moves. */
+.xiaoyang-strip-window {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: clamp(190px, 29vh, 282px);
+  overflow: hidden;
+  background: linear-gradient(
+    0deg,
+    rgb(3 9 7 / 0.96) 0%,
+    rgb(3 9 7 / 0.58) 42%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 3%,
+    #000 97%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 3%,
+    #000 97%,
+    transparent 100%
+  );
+}
+.xiaoyang-strip {
+  --ribbon-gap: 20px;
+  position: absolute;
+  right: auto;
+  bottom: 20px;
+  left: 0;
+  width: max-content;
+  min-width: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ribbon-gap);
+  padding: 0 28px;
+  overflow: visible;
+  background: none;
+  animation: xiao-strip-marquee 38s linear infinite;
+  will-change: transform;
+}
+.xiaoyang-strip-set {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ribbon-gap);
+}
+.xiaoyang-card {
+  --light-rgb: 183 255 34;
+  position: relative;
+  flex: 0 0 clamp(138px, 12.8vw, 205px);
+  height: clamp(168px, 22vh, 236px);
+  overflow: hidden;
+  border: 1px solid rgb(224 255 211 / 0.25);
+  border-radius: 15px;
+  background: #101a16;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.1),
+    0 14px 34px rgb(0 0 0 / 0.48);
+  outline: none;
+  translate: 0 0;
+  rotate: 0deg;
+  scale: 1;
+  transition:
+    translate 320ms cubic-bezier(0.2, 0.75, 0.2, 1),
+    rotate 320ms cubic-bezier(0.2, 0.75, 0.2, 1),
+    scale 320ms cubic-bezier(0.2, 0.75, 0.2, 1),
+    border-color 280ms ease,
+    box-shadow 320ms ease,
+    filter 320ms ease,
+    opacity 320ms ease;
+}
+.xiaoyang-card.rhythm-1 {
+  height: clamp(148px, 18.5vh, 204px);
+}
+.xiaoyang-card.rhythm-2 {
+  height: clamp(160px, 20.5vh, 222px);
+}
+.xiaoyang-card img {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.82) contrast(1.02) brightness(0.88);
+  transform: scale(1.015);
+  transition:
+    transform 650ms cubic-bezier(0.2, 0.75, 0.2, 1),
+    filter 360ms ease;
+}
+.xiaoyang-card-index {
+  position: absolute;
+  z-index: 4;
+  top: 8px;
+  right: 8px;
+  padding: 3px 7px;
+  border: 1px solid rgb(230 255 216 / 0.2);
+  border-radius: 999px;
+  color: #efffe8;
+  background: rgb(5 15 11 / 0.76);
+  backdrop-filter: blur(8px);
+  font: 700 9px/1.2 var(--font-sans, "Arial", sans-serif);
+}
+.xiaoyang-card-copy {
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 42px 12px 12px;
+  color: #f4ffe9;
+  background: linear-gradient(
+    0deg,
+    rgb(3 10 7 / 0.94),
+    rgb(3 10 7 / 0.62) 58%,
+    transparent
+  );
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 260ms ease,
+    transform 320ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+.xiaoyang-card-copy b {
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.xiaoyang-card-copy small {
+  color: #b7ff22;
+  font-size: 8px;
+  line-height: 1.2;
+}
+.xiaoyang-card .surface-light {
+  inset: 0;
+  z-index: 3;
+  padding: 0;
+  color: transparent;
+  background: transparent;
+  font: inherit;
+}
+.xiaoyang-card .surface-light-spot {
+  inset: 0;
+  background: radial-gradient(
+    310px circle at var(--light-x) var(--light-y),
+    rgb(213 255 171 / 0.2),
+    transparent 62%
+  );
+}
+.xiaoyang-card .surface-light-edge {
+  inset: 0;
+  padding: 1px;
+  background:
+    radial-gradient(
+      250px circle at var(--light-x) var(--light-y),
+      rgb(243 255 220 / 0.94),
+      rgb(183 255 34 / 0.5) 30%,
+      transparent 72%
+    ),
+    linear-gradient(
+      105deg,
+      transparent 20%,
+      rgb(183 255 34 / 0.13) 48%,
+      transparent 80%
+    );
+  opacity: 0.42;
+}
+.xiaoyang-card .surface-light-sheen {
+  top: -25%;
+  right: auto;
+  bottom: -25%;
+  left: 0;
+  width: 48%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(225 255 183 / 0.08),
+    transparent
+  );
+}
+.xiaoyang-strip-set:first-child .xiaoyang-card {
+  animation: xiao-card-reveal 680ms cubic-bezier(0.2, 0.75, 0.2, 1) backwards;
+}
+.xiaoyang-strip-set:first-child .xiaoyang-card:nth-child(2) {
+  animation-delay: 70ms;
+}
+.xiaoyang-strip-set:first-child .xiaoyang-card:nth-child(3) {
+  animation-delay: 140ms;
+}
+.xiaoyang-strip-set:first-child .xiaoyang-card:nth-child(4) {
+  animation-delay: 210ms;
+}
+.xiaoyang-strip-set:first-child .xiaoyang-card:nth-child(5) {
+  animation-delay: 280ms;
+}
+.xiaoyang-strip-set:first-child .xiaoyang-card:nth-child(6) {
+  animation-delay: 350ms;
+}
+.xiaoyang-strip-set:first-child .xiaoyang-card:nth-child(7) {
+  animation-delay: 420ms;
+}
+.xiaoyang-strip-set:first-child .xiaoyang-card:nth-child(8) {
+  animation-delay: 490ms;
+}
+@keyframes xiao-card-reveal {
+  from {
+    opacity: 0;
+    clip-path: inset(34% 0 0 round 15px);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 round 15px);
+  }
+}
+@keyframes xiao-strip-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(-50% - (var(--ribbon-gap) / 2)), 0, 0);
+  }
+}
+.xiaoyang-strip-window:hover .xiaoyang-strip,
+.xiaoyang-strip-window:focus-within .xiaoyang-strip {
+  animation-play-state: paused;
+}
+.xiaoyang-card:hover,
+.xiaoyang-card:focus-visible {
+  z-index: 5;
+  translate: 0 -14px;
+  rotate: -0.6deg;
+  scale: 1.018;
+  border-color: rgb(183 255 34 / 0.78);
+  box-shadow:
+    inset 0 1px 0 rgb(246 255 232 / 0.22),
+    0 20px 46px rgb(0 0 0 / 0.58),
+    0 0 30px rgb(183 255 34 / 0.13);
+}
+.xiaoyang-card:hover img,
+.xiaoyang-card:focus-visible img {
+  filter: saturate(1.02) contrast(1.04) brightness(1.02);
+  transform: scale(1.075);
+}
+.xiaoyang-card:hover .xiaoyang-card-copy,
+.xiaoyang-card:focus-visible .xiaoyang-card-copy {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (hover: hover) and (pointer: fine) {
+  .xiaoyang-strip-window:has(.xiaoyang-card:hover) .xiaoyang-card:not(:hover) {
+    opacity: 0.55;
+    filter: saturate(0.62) brightness(0.76);
+  }
+}
+@media (max-width: 760px) {
+  .xiaoyang-strip-window {
+    height: 166px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .xiaoyang-strip {
+    --ribbon-gap: 10px;
+    bottom: 12px;
+    gap: var(--ribbon-gap);
+    padding: 0 14px;
+    animation-duration: 44s;
+  }
+  .xiaoyang-strip-set {
+    gap: var(--ribbon-gap);
+  }
+  .xiaoyang-card {
+    flex-basis: 112px;
+    height: 140px;
+    border-radius: 12px;
+  }
+  .xiaoyang-card.rhythm-1 {
+    height: 122px;
+  }
+  .xiaoyang-card.rhythm-2 {
+    height: 132px;
+  }
+  .xiaoyang-card-copy {
+    display: none;
+  }
+  .xiaoyang-card:hover,
+  .xiaoyang-card:focus-visible {
+    translate: 0 -5px;
+    rotate: 0deg;
+    scale: 1.01;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .xiaoyang-strip-window {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .xiaoyang-strip-window::-webkit-scrollbar {
+    display: none;
+  }
+  .xiaoyang-strip {
+    position: relative;
+    bottom: auto;
+    height: 100%;
+    align-items: flex-end;
+    animation: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+  .xiaoyang-strip-set[aria-hidden="true"] {
+    display: none;
+  }
+  .xiaoyang-card {
+    scroll-snap-align: start;
+    animation: none !important;
+    transition: none !important;
+  }
+  .xiaoyang-card:hover,
+  .xiaoyang-card:focus-visible {
+    translate: 0 0;
+    rotate: 0deg;
+    scale: 1;
+  }
+  .xiaoyang-card img,
+  .xiaoyang-card-copy {
+    transition: none !important;
+  }
+}

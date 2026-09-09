@@ -1,0 +1,70 @@
+CREATE TABLE IF NOT EXISTS works (
+  id TEXT PRIMARY KEY,
+  slug TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
+  kicker TEXT NOT NULL DEFAULT '',
+  summary TEXT NOT NULL DEFAULT '',
+  problem TEXT NOT NULL DEFAULT '',
+  solution TEXT NOT NULL DEFAULT '',
+  result TEXT NOT NULL DEFAULT '',
+  stack_json TEXT NOT NULL DEFAULT '[]',
+  cover_url TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'draft',
+  featured INTEGER NOT NULL DEFAULT 0,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS works_status_sort_idx ON works(status, sort_order);
+
+CREATE TABLE IF NOT EXISTS posts (
+  id TEXT PRIMARY KEY,
+  slug TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'Notes',
+  excerpt TEXT NOT NULL DEFAULT '',
+  body TEXT NOT NULL DEFAULT '',
+  cover_url TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'draft',
+  published_at TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS posts_status_published_idx ON posts(status, published_at DESC);
+
+CREATE TABLE IF NOT EXISTS resume (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  profile TEXT NOT NULL DEFAULT '',
+  availability TEXT NOT NULL DEFAULT '',
+  location TEXT NOT NULL DEFAULT '',
+  email TEXT NOT NULL DEFAULT '',
+  experience_json TEXT NOT NULL DEFAULT '[]',
+  education_json TEXT NOT NULL DEFAULT '[]',
+  skills_json TEXT NOT NULL DEFAULT '[]',
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS site_settings (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  name TEXT NOT NULL DEFAULT '',
+  role TEXT NOT NULL DEFAULT '',
+  hero_prefix TEXT NOT NULL DEFAULT '',
+  hero_emphasis TEXT NOT NULL DEFAULT '',
+  hero_suffix TEXT NOT NULL DEFAULT '',
+  hero_description TEXT NOT NULL DEFAULT '',
+  hero_video_url TEXT NOT NULL DEFAULT '',
+  email TEXT NOT NULL DEFAULT '',
+  location TEXT NOT NULL DEFAULT '',
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS media (
+  id TEXT PRIMARY KEY,
+  object_key TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  content_type TEXT NOT NULL,
+  size INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

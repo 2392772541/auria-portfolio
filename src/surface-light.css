@@ -1,0 +1,152 @@
+/* Shared light treatments, adapted from the researched glass-card behavior.
+   Palette and content stay local; the atmosphere is a small CSS composition. */
+.jade-showcase-page { position: relative; isolation: isolate; }
+.light-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  pointer-events: none;
+  contain: paint;
+}
+.light-atmosphere > span {
+  position: absolute;
+  width: min(1050px, 90vw);
+  height: min(780px, 80vh);
+  border-radius: 50%;
+  animation: atmosphere-drift 20s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+.light-atmosphere-lime {
+  top: 2%; left: -18%;
+  background: radial-gradient(ellipse, rgb(183 255 34 / .18), rgb(104 179 68 / .065) 40%, transparent 70%);
+}
+.light-atmosphere-mint {
+  top: 32%; right: -20%;
+  background: radial-gradient(ellipse, rgb(71 203 155 / .16), rgb(46 152 136 / .06) 42%, transparent 72%);
+  animation-delay: -9s !important;
+  animation-duration: 25s !important;
+}
+.light-atmosphere-halo {
+  bottom: 1%; left: 8%;
+  background: radial-gradient(ellipse, rgb(183 255 34 / .11), transparent 68%);
+  animation-delay: -14s !important;
+  animation-duration: 28s !important;
+}
+.light-atmosphere[data-flow="running"] > span { animation-play-state: running; }
+@keyframes atmosphere-drift {
+  from { transform: translate3d(-4%, -3%, 0) scale(.92); }
+  to { transform: translate3d(22%, 14%, 0) scale(1.14); }
+}
+
+[data-light-surface] {
+  --light-rgb: 183 255 34;
+  --light-x: 50%;
+  --light-y: 30%;
+  position: relative;
+  isolation: isolate;
+}
+[data-light-tilt] {
+  rotate: var(--light-axis-x, 0) var(--light-axis-y, 1) 0 var(--light-angle, 0deg);
+  transition: rotate 240ms cubic-bezier(.2,.7,.2,1), border-color 300ms ease, box-shadow 300ms ease;
+}
+.surface-light {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.surface-light, .surface-light * { pointer-events: none !important; }
+.surface-light > span { position: absolute; border-radius: inherit; }
+.surface-light-spot {
+  inset: 0;
+  background: radial-gradient(600px circle at var(--light-x) var(--light-y), rgb(var(--light-rgb) / .12), transparent 58%);
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.surface-light-edge {
+  inset: 0;
+  padding: 1px;
+  background:
+    radial-gradient(320px circle at var(--light-x) var(--light-y), rgb(242 255 212 / .92), rgb(var(--light-rgb) / .46) 30%, transparent 72%),
+    linear-gradient(105deg, transparent 20%, rgb(var(--light-rgb) / .12) 48%, transparent 80%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: .28;
+  transition: opacity 350ms ease;
+}
+.surface-light-sheen {
+  top: -25%; bottom: -25%; left: 0; width: 48%;
+  background: linear-gradient(90deg, transparent, rgb(225 255 183 / .07), transparent);
+  transform: translateX(-220%) skewX(-20deg);
+  opacity: 0;
+}
+[data-light-surface].is-lit > .surface-light .surface-light-spot,
+[data-light-surface]:focus-within > .surface-light .surface-light-spot { opacity: 1; }
+[data-light-surface].is-lit > .surface-light .surface-light-edge,
+[data-light-surface]:focus-within > .surface-light .surface-light-edge { opacity: 1; }
+[data-light-surface].is-lit > .surface-light .surface-light-sheen { animation: surface-sheen 1100ms ease-out both; }
+@keyframes surface-sheen {
+  0% { transform: translateX(-160%) skewX(-20deg); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateX(330%) skewX(-20deg); opacity: 0; }
+}
+
+.jade-project-stage, .jade-capability-grid { perspective: 1200px; }
+.jade-project-card[data-light-surface] {
+  background: linear-gradient(150deg, rgb(225 255 215 / .065), rgb(255 255 255 / .015)), rgb(9 19 20 / .82);
+  border-color: rgb(183 255 160 / .2);
+  box-shadow: inset 0 1px 0 rgb(228 255 214 / .1), 7px 7px 0 rgb(var(--light-rgb) / .14), 0 20px 60px rgb(0 0 0 / .22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+.jade-project-card[data-light-surface].accent-blue { --light-rgb: 114 206 197; }
+.jade-project-card[data-light-surface].is-lit,
+.jade-project-card[data-light-surface]:focus-within {
+  border-color: rgb(var(--light-rgb) / .45);
+  box-shadow: inset 0 1px 0 rgb(234 255 222 / .22), 7px 7px 0 rgb(var(--light-rgb) / .2), 0 24px 70px rgb(0 0 0 / .32), 0 0 36px rgb(var(--light-rgb) / .06);
+}
+.jade-capability-grid { background: rgb(10 22 20 / .7); }
+.jade-capability[data-light-surface] { background: rgb(200 255 191 / .018); }
+.jade-capability[data-light-surface]:nth-child(2n) { --light-rgb: 114 206 197; }
+.jade-capability[data-light-surface] > svg { transition: filter 300ms, translate 300ms; }
+.jade-capability[data-light-surface].is-lit > svg {
+  filter: drop-shadow(0 0 9px rgb(var(--light-rgb) / .48));
+  translate: 0 -2px;
+}
+.jade-highlight-label[data-light-surface] {
+  background: linear-gradient(140deg, rgb(183 255 34 / .07), transparent), rgb(15 28 23 / .9);
+  box-shadow: inset 0 1px 0 rgb(228 255 214 / .16), 7px 7px 0 rgb(183 255 34 / .18);
+}
+.personal-extension-card[data-light-surface].is-lit { border-color: rgb(183 255 34 / .58); }
+.personal-extension-card[data-light-surface] .surface-light-spot { background: radial-gradient(420px circle at var(--light-x) var(--light-y), rgb(205 255 164 / .12), transparent 62%); }
+.jade-project-selector button { position: relative; overflow: hidden; }
+.jade-project-selector button::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 15%, rgb(255 255 255 / .18) 48%, transparent 80%);
+  transform: translateX(-125%);
+}
+@media (hover: hover) and (pointer: fine) {
+  .jade-project-selector button.is-active::after { animation: selector-glint 750ms ease-out; }
+  @keyframes selector-glint { to { transform: translateX(125%); } }
+}
+
+@media (hover: none), (pointer: coarse) {
+  [data-light-tilt] { rotate: none; }
+  .surface-light-spot, .surface-light-sheen { display: none; }
+  .surface-light-edge { opacity: .32; }
+  .light-atmosphere > span { opacity: .5; }
+  .jade-project-card[data-light-surface] { backdrop-filter: none; -webkit-backdrop-filter: none; background-color: rgb(9 19 20 / .95); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .light-atmosphere > span, .surface-light-sheen,
+  .jade-project-selector button::after { animation: none !important; }
+  [data-light-tilt] { rotate: none !important; transition: none; }
+  .surface-light-spot, .surface-light-sheen { display: none; }
+  .surface-light-edge, .jade-capability[data-light-surface] > svg { transition: none; }
+  .jade-capability[data-light-surface] > svg { translate: none !important; }
+}

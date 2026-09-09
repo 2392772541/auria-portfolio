@@ -1,0 +1,19 @@
+.admin-side nav button{position:relative;transition:color .24s ease,background .24s ease,transform .24s ease}
+.admin-side nav button::after{content:'';position:absolute;left:0;top:50%;width:2px;height:0;background:#62d9ff;box-shadow:0 0 12px #62d9ff;transform:translateY(-50%);transition:height .24s ease}
+.admin-side nav button.active::after{height:58%}
+.admin-side nav button:hover{transform:translateX(3px);color:#dff7ff}
+.stats>div,.admin-card{animation:admin-card-in .5s cubic-bezier(.2,.7,.2,1) both}
+.stats>div:nth-child(2){animation-delay:60ms}.stats>div:nth-child(3){animation-delay:120ms}.stats>div:nth-child(4){animation-delay:180ms}
+.quick-grid button{transition:transform .25s ease,background .25s ease,border-color .25s ease}
+.quick-grid button:hover{transform:translateY(-3px);background:#0e2131;border-color:#62d8ff55}
+.editor{animation:editor-slide-in .38s cubic-bezier(.2,.7,.2,1) both}
+.toast{animation:toast-rise .3s cubic-bezier(.2,.7,.2,1) both}
+@keyframes editor-slide-in{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes toast-rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes admin-card-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.admin-side nav button,.stats>div,.admin-card,.quick-grid button,.editor,.toast{animation:none!important;transition:none!important}}
+.toast{max-width:min(420px,calc(100vw - 32px));white-space:normal;overflow-wrap:anywhere;line-height:1.45}
+@media(max-width:650px){.toast{right:16px;bottom:16px;left:16px;max-width:none;justify-content:flex-start}}
+.upload-progress{display:grid;gap:9px;margin:0 0 18px;padding:12px 14px;border:1px solid #62d9ff36;border-radius:9px;background:#071521;color:#cceeff;font-size:11px;animation:admin-card-in .35s ease both}.upload-progress>div{display:flex;align-items:center;gap:8px}.upload-progress svg{width:14px;color:#62d9ff}.upload-progress-track{display:block;height:3px;overflow:hidden;border-radius:99px;background:#163347}.upload-progress-track>span{display:block;width:var(--upload-progress,0%);height:100%;border-radius:inherit;background:linear-gradient(90deg,#62d9ff,#b7ff22);box-shadow:0 0 12px #62d9ff;transition:width .28s cubic-bezier(.2,.7,.2,1)}
+.editor-upload-error{margin:8px 0 14px;padding:9px 11px;border:1px solid #ff7f8c66;border-radius:7px;background:#3a1115;color:#ffd9de;font-size:11px;line-height:1.45}
+@media(prefers-reduced-motion:reduce){.upload-progress,.upload-progress-track>span{animation:none;transition:none}}

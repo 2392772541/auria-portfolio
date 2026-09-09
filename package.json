@@ -1,0 +1,51 @@
+{
+  "name": "auria-hero",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22 <23",
+    "npm": ">=10 <11"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/clean.mjs && tsc -b && vite build",
+    "preview": "vite preview",
+    "start": "node --env-file-if-exists=.env server/index.mjs",
+    "backup": "node scripts/backup.mjs",
+    "test:avatar": "node scripts/test-digital-avatar.mjs",
+    "test:avatar-upstream": "node scripts/test-avatar-upstream-recovery.mjs",
+    "test:avatar-ui": "node scripts/test-avatar-ui-regressions.mjs",
+    "test:pdf-embed": "node scripts/test-pdf-embed.mjs",
+    "test:pdf-recovery": "node scripts/test-pdf-recovery.mjs",
+    "test:wechat": "node scripts/test-wechat-preview.mjs",
+    "test:work-showcase": "node scripts/test-work-showcase.mjs"
+  },
+  "dependencies": {
+    "@tiptap/extension-image": "^3.30.2",
+    "@tiptap/extension-youtube": "^3.30.2",
+    "@tiptap/pm": "^3.30.2",
+    "@tiptap/react": "^3.30.2",
+    "@tiptap/starter-kit": "^3.30.2",
+    "better-sqlite3": "^13.0.3",
+    "dompurify": "^3.4.14",
+    "express": "^5.2.1",
+    "lucide-react": "^1.33.0",
+    "multer": "^2.2.0",
+    "pdfjs-dist": "^5.7.284",
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "1.37.1",
+    "@cloudflare/workers-types": "^4.20260702.1",
+    "@openai/sites-vite-plugin": "0.2.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "vite": "8.0.13"
+  }
+}

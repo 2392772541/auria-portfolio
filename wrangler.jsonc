@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "server",
+  "compatibility_date": "2026-05-22",
+  "main": "src/worker.ts",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kai-portfolio-content",
+      "database_id": "00000000-0000-4000-8000-000000000000"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "kai-portfolio-media"
+    }
+  ],
+  "assets": {
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  }
+}

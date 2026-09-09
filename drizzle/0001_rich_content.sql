@@ -1,0 +1,3 @@
+ALTER TABLE posts ADD COLUMN content_type TEXT NOT NULL DEFAULT 'article';
+ALTER TABLE posts ADD COLUMN video_url TEXT NOT NULL DEFAULT '';
+PRAGMA optimize;

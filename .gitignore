@@ -1,0 +1,62 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/.vinext/
+/out/
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local environment
+.env*
+!.env.example
+
+# local runtime data and migration exports
+/data/*
+!/data/uploads/
+/data/uploads/*
+!/data/uploads/.gitkeep
+/migration-data/
+/backups/
+
+# deployment and generated files
+.vercel
+next-env.d.ts
+/dist/
+*.tsbuildinfo
+/.wrangler/
+/outputs/
+/work/
+/.codex-backups/
+/.codex-handoff/
+/.codex-handoff-checkpoint.json
+/.tmp/
+/logs/
+/artifacts/
+/qa/
+/wechat/
+*.log
+*.sqlite*
+*.db
+*.zip
+*.bundle
+/.openai/

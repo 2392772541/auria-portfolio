@@ -1,0 +1,19 @@
+[Unit]
+Description=Auria website
+After=network.target
+
+[Service]
+Type=simple
+User=auria-hero
+Group=auria-hero
+WorkingDirectory=/opt/auria-hero/current
+EnvironmentFile=/etc/auria-hero/auria.env
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=AURIA_DATA_DIR=/var/lib/auria-hero/data
+ExecStart=/usr/bin/node server/index.mjs
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,56 @@
+.portfolio-inner{background-image:linear-gradient(#b7ff2209 1px,transparent 1px),linear-gradient(90deg,#b7ff2209 1px,transparent 1px);background-size:72px 72px;background-attachment:fixed;animation:portfolio-grid-drift 28s linear infinite}
+@keyframes portfolio-grid-drift{from{background-position:0 0,0 0}to{background-position:72px 72px,72px 72px}}
+.portfolio-footer>a{transition:transform .3s,color .3s}.portfolio-footer>a:hover{transform:translateX(8px);color:#b7ff22}
+@media(prefers-reduced-motion:reduce){.portfolio-inner{animation:none!important}}
+html.page-leaving #root{animation:page-leave .18s ease-in forwards}@keyframes page-leave{to{opacity:0;transform:translateY(-8px);filter:blur(2px)}}
+.portfolio-404 strong{animation:four-oh-four-drift 7s ease-in-out infinite alternate;text-shadow:0 0 45px #b7ff2233}@keyframes four-oh-four-drift{from{transform:translateX(-1.5%)}to{transform:translateX(1.5%)}}.portfolio-404 .portfolio-button,.portfolio-404 .portfolio-text-button{transition:transform .3s,color .3s}.portfolio-404 .portfolio-button:hover,.portfolio-404 .portfolio-text-button:hover{transform:translateX(7px)}
+@media(prefers-reduced-motion:reduce){.portfolio-404 strong{animation:none!important}}
+.portfolio-404,html.page-leaving #root{transition:none!important}html.page-leaving #root{animation:none!important}
+.portfolio-404{color:#1b1a17}.portfolio-404 .portfolio-kicker,.portfolio-404 p{color:#6e6a60}.portfolio-404 .portfolio-header{color:#1b1a17;background:#e5e1d7;border-color:#1b1a1726}.portfolio-404 .portfolio-header nav a{color:#6e6a60}.portfolio-404 .portfolio-header-cta{border-color:#1b1a17}.portfolio-404 .portfolio-logo-mark{background:#1b1a17;color:#e5e1d7}
+
+/* Detail pages carry the reference video's layered, editorial pacing. */
+.portfolio-inner .case-visual-evidence figure{overflow:hidden;transition:transform .55s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s}
+.portfolio-inner .case-visual-evidence figure:nth-child(2){transform:translateY(24px)}
+.portfolio-inner .case-visual-evidence figure.is-visible:nth-child(2){transform:translateY(24px)}
+.portfolio-inner .case-visual-evidence figure:hover{transform:translateY(-8px)!important;border-color:#b7ff22;box-shadow:0 22px 48px #0008}
+.portfolio-inner .case-visual-evidence img{transition:transform .9s cubic-bezier(.2,.7,.2,1),filter .4s}
+.portfolio-inner .case-visual-evidence figure:hover img{transform:scale(1.045);filter:saturate(.95) contrast(1.04)}
+.portfolio-inner .case-related a{transition:padding .35s,background .35s,color .25s}
+.portfolio-inner .case-related a:hover{padding-left:14px;background:#0d1b15;color:#b7ff22}
+.portfolio-inner .post-cover{transition:transform .8s cubic-bezier(.2,.7,.2,1),filter .4s;transform-origin:center}
+.portfolio-inner .post-cover:hover{transform:scale(1.018);filter:saturate(.95) contrast(1.04)}
+.portfolio-inner .writing-list>a,.portfolio-site .portfolio-note-list>a{transition:transform .35s cubic-bezier(.2,.7,.2,1),background-color .35s ease,border-color .3s ease}
+.portfolio-inner .writing-list>a:hover,.portfolio-site .portfolio-note-list>a:hover{transform:translateX(8px);background:#0c1d16;border-color:#b7ff2266}
+.portfolio-inner .writing-list>a:hover,.portfolio-site .portfolio-note-list>a:hover{animation-name:none}
+.portfolio-inner .writing-list>a svg,.portfolio-site .portfolio-note-list>a svg{transition:transform .3s ease,color .3s ease}
+.portfolio-inner .writing-list>a:hover svg,.portfolio-site .portfolio-note-list>a:hover svg{transform:translateX(6px);color:#b7ff22}
+.portfolio-inner .post-body>*{animation:post-block-in .65s cubic-bezier(.2,.7,.2,1) both}
+.portfolio-inner .post-body>*:nth-child(2){animation-delay:.08s}.portfolio-inner .post-body>*:nth-child(3){animation-delay:.16s}.portfolio-inner .post-body>*:nth-child(4){animation-delay:.24s}.portfolio-inner .post-body>*:nth-child(5){animation-delay:.32s}.portfolio-inner .post-body>*:nth-child(6){animation-delay:.4s}
+@keyframes post-block-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.portfolio-inner .case-visual-evidence figure:nth-child(2),.portfolio-inner .case-visual-evidence figure.is-visible:nth-child(2){transform:none}.portfolio-inner .case-visual-evidence figure,.portfolio-inner .case-visual-evidence img,.portfolio-inner .case-related a,.portfolio-inner .post-cover{transition:none}.portfolio-inner .post-body>*{animation:none;opacity:1;transform:none}.portfolio-inner .post-cover:hover,.portfolio-inner .case-visual-evidence figure:hover{transform:none!important}}
+
+/* Route-level motion: editorial pages enter as a sequence, then settle into a quiet scroll rhythm. */
+.portfolio-inner .catalog-hero,.portfolio-inner .writing-hero,.portfolio-inner .contact-hero,.portfolio-inner .about-intro{animation:inner-hero-in .9s cubic-bezier(.2,.7,.2,1) both}
+.portfolio-inner .catalog-hero .portfolio-kicker,.portfolio-inner .writing-hero .portfolio-kicker,.portfolio-inner .contact-hero .portfolio-kicker,.portfolio-inner .about-intro .portfolio-kicker{animation:inner-copy-in .6s .08s both}
+.portfolio-inner .catalog-hero h1,.portfolio-inner .writing-hero h1,.portfolio-inner .contact-hero h1,.portfolio-inner .about-intro h1{animation:inner-copy-in .72s .16s both}
+.portfolio-inner .catalog-hero>p,.portfolio-inner .writing-hero>p,.portfolio-inner .contact-hero>p,.portfolio-inner .about-intro>p{animation:inner-copy-in .72s .26s both}
+@keyframes inner-hero-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes inner-copy-in{from{opacity:0;transform:translateY(14px);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}
+.portfolio-inner .portfolio-work-tile{transform:perspective(900px) rotateX(var(--tile-rotate-x,0deg)) rotateY(var(--tile-rotate-y,0deg)) translateY(0);transform-style:preserve-3d;will-change:transform}
+.portfolio-inner .portfolio-work-tile:hover{transform:perspective(900px) rotateX(var(--tile-rotate-x,0deg)) rotateY(var(--tile-rotate-y,0deg)) translateY(-8px)}
+.portfolio-inner .portfolio-work-visual:before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at var(--spot-x,50%) var(--spot-y,50%),#b7ff2226,transparent 32%);opacity:0;transition:opacity .35s ease}
+.portfolio-inner .portfolio-work-tile:hover .portfolio-work-visual:before{opacity:1}
+.portfolio-inner .case-page .portfolio-work-visual:before{opacity:.72}
+.portfolio-inner .portfolio-work-tile{--spot-x:50%;--spot-y:50%}
+@supports (animation-timeline:view()){
+  .portfolio-inner .case-facts,.portfolio-inner .case-sections section,.portfolio-inner .about-experience>div,.portfolio-inner .about-skills,.portfolio-inner .contact-editorial label,.portfolio-inner .writing-list>a,.portfolio-inner .portfolio-capability-grid>article{animation:inner-view-rise linear both;animation-timeline:view();animation-range:entry 0% cover 32%}
+  @keyframes inner-view-rise{from{opacity:.25;transform:translateY(30px) scale(.985)}to{opacity:1;transform:none}}
+}
+@media(prefers-reduced-motion:reduce){.portfolio-inner .catalog-hero,.portfolio-inner .writing-hero,.portfolio-inner .contact-hero,.portfolio-inner .about-intro,.portfolio-inner .catalog-hero *,.portfolio-inner .writing-hero *,.portfolio-inner .contact-hero *,.portfolio-inner .about-intro *,.portfolio-inner .portfolio-work-tile{animation:none!important;transform:none!important;filter:none!important;will-change:auto}.portfolio-inner .portfolio-work-visual:before{display:none}}
+.portfolio-inner .inner-contact-title{font:800 clamp(58px,10vw,148px)/.8 var(--font-sans);letter-spacing:.015em;margin:0 0 16px;color:var(--portfolio-ink);text-transform:uppercase}
+.portfolio-inner .inner-contact-title span{color:#b7ff22;font-size:.54em;margin-left:10px}
+.portfolio-inner .inner-contact-lead{margin:0 0 28px;color:var(--portfolio-muted);font:400 clamp(24px,3vw,44px)/1.05 var(--font-serif)}
+@media(prefers-reduced-motion:reduce){.portfolio-inner .inner-contact-title,.portfolio-inner .inner-contact-lead{animation:none!important}}
+
+/* Hover feedback must win over the optional view-timeline reveal animation. */
+.portfolio-inner .writing-list>a:hover,.portfolio-site .portfolio-note-list>a:hover{animation-name:none;transform:translateY(0);translate:8px 0}
