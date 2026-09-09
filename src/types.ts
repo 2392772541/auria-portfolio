@@ -1,3 +1,4 @@
+import type {SiteContent} from './siteContent';
 export type PublishStatus = 'draft' | 'published';
 export type ContentType = 'article' | 'video' | 'gallery';
 export type WorkShowcaseType = 'image' | 'video';
@@ -104,6 +105,7 @@ export interface MediaItem {
 }
 
 export interface SiteData {
+  content?: SiteContent;
   works: Work[];
   posts: Post[];
   resume: ResumeData;

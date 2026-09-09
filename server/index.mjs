@@ -1,4 +1,5 @@
 import express from 'express';
+import {validateContent, defaults as contentDefaults} from '../shared/site-content.mjs';
 import multer from 'multer';
 import Database from 'better-sqlite3';
 import crypto from 'node:crypto';
@@ -28,6 +29,7 @@ db.pragma('foreign_keys = ON');
 db.exec(`
   CREATE TABLE IF NOT EXISTS works (id TEXT PRIMARY KEY, slug TEXT UNIQUE NOT NULL, title TEXT NOT NULL, kicker TEXT DEFAULT '', summary TEXT DEFAULT '', problem TEXT DEFAULT '', solution TEXT DEFAULT '', result TEXT DEFAULT '', stack_json TEXT DEFAULT '[]', cover_url TEXT DEFAULT '', showcase_url TEXT DEFAULT '', showcase_type TEXT DEFAULT 'image', showcase_layout TEXT DEFAULT 'standard', showcase_highlight TEXT DEFAULT '', showcase_cta TEXT DEFAULT '查看项目', status TEXT DEFAULT 'draft', featured INTEGER DEFAULT 0, sort_order INTEGER DEFAULT 0, created_at TEXT DEFAULT CURRENT_TIMESTAMP, updated_at TEXT DEFAULT CURRENT_TIMESTAMP);
   CREATE TABLE IF NOT EXISTS posts (id TEXT PRIMARY KEY, slug TEXT UNIQUE NOT NULL, title TEXT NOT NULL, category TEXT DEFAULT 'Notes', excerpt TEXT DEFAULT '', body TEXT DEFAULT '', cover_url TEXT DEFAULT '', content_type TEXT DEFAULT 'article', video_url TEXT DEFAULT '', status TEXT DEFAULT 'draft', published_at TEXT DEFAULT '', created_at TEXT DEFAULT CURRENT_TIMESTAMP, updated_at TEXT DEFAULT CURRENT_TIMESTAMP);
+  CREATE TABLE IF NOT EXISTS page_content (id INTEGER PRIMARY KEY CHECK(id=1), content_json TEXT NOT NULL DEFAULT '{}', updated_at TEXT DEFAULT CURRENT_TIMESTAMP);
   CREATE TABLE IF NOT EXISTS resume (id INTEGER PRIMARY KEY CHECK(id=1), profile TEXT DEFAULT '', availability TEXT DEFAULT '', location TEXT DEFAULT '', email TEXT DEFAULT '', experience_json TEXT DEFAULT '[]', education_json TEXT DEFAULT '[]', skills_json TEXT DEFAULT '[]', updated_at TEXT DEFAULT CURRENT_TIMESTAMP);
   CREATE TABLE IF NOT EXISTS site_settings (id INTEGER PRIMARY KEY CHECK(id=1), name TEXT DEFAULT '', role TEXT DEFAULT '', hero_prefix TEXT DEFAULT '', hero_emphasis TEXT DEFAULT '', hero_suffix TEXT DEFAULT '', hero_description TEXT DEFAULT '', hero_video_url TEXT DEFAULT '', email TEXT DEFAULT '', location TEXT DEFAULT '', updated_at TEXT DEFAULT CURRENT_TIMESTAMP);
   CREATE TABLE IF NOT EXISTS media (id TEXT PRIMARY KEY, object_key TEXT UNIQUE NOT NULL, name TEXT NOT NULL, content_type TEXT NOT NULL, size INTEGER DEFAULT 0, created_at TEXT DEFAULT CURRENT_TIMESTAMP);
@@ -174,6 +176,7 @@ function work(row) {
   };
 }
 function post(row) { return { ...row, content_type: row.content_type || 'article', video_url: row.video_url || '' }; }
+function pageContent(){const row=db.prepare('SELECT content_json FROM page_content WHERE id=1').get();return row?validateContent(parse(row.content_json,{})):structuredClone(contentDefaults)}
 function settings() { return db.prepare('SELECT * FROM site_settings WHERE id=1').get() || {}; }
 function avatar(admin = false) {
   const row = db.prepare('SELECT * FROM avatar_settings WHERE id=1').get() || {};
@@ -185,11 +188,15 @@ function mediaRows() { return db.prepare('SELECT id, object_key AS key, name, co
 function contactRows() { return db.prepare('SELECT * FROM contacts ORDER BY created_at DESC').all(); }
 function bootstrap(admin = false) {
   const where = admin ? '' : "WHERE status='published'";
+  const works=db.prepare(`SELECT * FROM works ${where} ORDER BY featured DESC, sort_order ASC`).all().map(work);
+  const content=pageContent();
+  if(!admin){const ids=new Set(works.map(w=>w.id)),slugs=new Set(works.map(w=>w.slug));content.projects=content.projects.filter(x=>x.workId?ids.has(x.workId):slugs.has(x.slug));content.hero.cards=content.hero.cards.filter(x=>!x.workId||ids.has(x.workId));content.extension.items=content.extension.items.filter(x=>x.enabled&&(!x.workId||ids.has(x.workId)));content.openSource.items=content.openSource.items.filter(x=>x.enabled)}
   return {
-    works: db.prepare(`SELECT * FROM works ${where} ORDER BY featured DESC, sort_order ASC`).all().map(work),
+    works,
     posts: db.prepare(`SELECT * FROM posts ${where} ORDER BY published_at DESC, created_at DESC`).all().map(post),
     resume: resume(),
     settings: settings(),
+    content,
     avatar: avatar(admin),
     ...(admin ? { media: mediaRows(), contacts: contactRows(), user: { id: 'server-owner', email: process.env.ADMIN_EMAIL || 'owner@server.local', name: '站长' } } : {}),
   };
@@ -214,7 +221,7 @@ db.prepare(`INSERT OR IGNORE INTO avatar_settings (id,enabled,name,subtitle,welc
 function ensureKolPilotProject() {
   db.prepare(`INSERT INTO works (id,slug,title,kicker,summary,problem,solution,result,stack_json,cover_url,showcase_url,showcase_type,showcase_layout,showcase_highlight,showcase_cta,status,featured,sort_order,updated_at)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'published',1,-10,?)
-    ON CONFLICT(slug) DO UPDATE SET title=excluded.title,kicker=excluded.kicker,summary=excluded.summary,problem=excluded.problem,solution=excluded.solution,result=excluded.result,stack_json=excluded.stack_json,cover_url=excluded.cover_url,showcase_url=excluded.showcase_url,showcase_type=excluded.showcase_type,showcase_layout=excluded.showcase_layout,showcase_highlight=excluded.showcase_highlight,showcase_cta=excluded.showcase_cta,status='published',featured=1,sort_order=-10,updated_at=excluded.updated_at`).run(
+    ON CONFLICT(slug) DO NOTHING`).run(
       uid(),'kolpilot-ai-creator-decision','KOLPilot｜AI 达人合作决策工作台','AI Product / Workflow',
       '面向中国中小品牌，将 Brief、候选发现、可解释匹配、Shortlist、建联审批和效果反馈放入同一 Campaign。',
       '达人合作的信息分散在 Brief、表格、聊天和多个平台中；AI 推荐又常只给黑箱分数，运营无法判断依据、时效和风险。',
@@ -266,9 +273,18 @@ function ensureContentDepth() {
     extras.forEach((item,index)=>insert.run(uid(),...item,new Date(Date.now()-(postCount+index)*86400000).toISOString()));
   }
 }
-seed();
-ensureContentDepth();
-ensureKolPilotProject();
+// Seed examples only for a new installation, never after an owner's edits or deletions.
+if(!db.prepare('SELECT id FROM site_settings WHERE id=1').get()){seed();ensureContentDepth();ensureKolPilotProject()}
+// Bind migrated display slots to stable work IDs once; later sorting cannot retarget them.
+if(!db.prepare('SELECT id FROM page_content WHERE id=1').get()){
+  const content=structuredClone(contentDefaults);
+  const works=db.prepare("SELECT id,slug FROM works WHERE status='published' ORDER BY featured DESC,sort_order ASC").all();
+  content.hero.cards.forEach((card,i)=>{card.workId=works[i]?.id||''});
+  let index=0;content.extension.items.forEach(item=>{if(item.kind==='work'){item.workId=works[index++]?.id||''}});
+  content.projects.forEach(item=>{item.workId=works.find(w=>w.slug===item.slug)?.id||''});
+  db.prepare('INSERT INTO page_content(id,content_json) VALUES(1,?)').run(JSON.stringify(content));
+}
+
 
 const app = express();
 app.disable('x-powered-by');
@@ -406,11 +422,12 @@ function savePost(data, id = uid()) {
 
 app.post('/api/admin/works', (req, res, next) => { try { json(res, saveWork(req.body), 201); } catch (e) { next(e); } });
 app.put('/api/admin/works/:id', (req, res, next) => { try { json(res, saveWork(req.body, req.params.id)); } catch (e) { next(e); } });
-app.delete('/api/admin/works/:id', (req, res) => { db.prepare('DELETE FROM works WHERE id=?').run(req.params.id); json(res, { ok: true }); });
+app.delete('/api/admin/works/:id', (req, res) => { db.transaction(()=>{const content=pageContent();content.hero.cards=content.hero.cards.filter(x=>x.workId!==req.params.id);content.extension.items=content.extension.items.filter(x=>x.workId!==req.params.id);content.projects=content.projects.filter(x=>x.workId!==req.params.id);db.prepare('UPDATE page_content SET content_json=?,updated_at=? WHERE id=1').run(JSON.stringify(content),now());db.prepare('DELETE FROM works WHERE id=?').run(req.params.id)})();json(res,{ok:true}); });
 app.post('/api/admin/posts', (req, res, next) => { try { json(res, savePost(req.body), 201); } catch (e) { next(e); } });
 app.put('/api/admin/posts/:id', (req, res, next) => { try { json(res, savePost(req.body, req.params.id)); } catch (e) { next(e); } });
 app.delete('/api/admin/posts/:id', (req, res) => { db.prepare('DELETE FROM posts WHERE id=?').run(req.params.id); json(res, { ok: true }); });
 app.put('/api/admin/resume', (req, res) => { const v=req.body; db.prepare('UPDATE resume SET profile=?,availability=?,location=?,email=?,pdf_enabled=?,pdf_kicker=?,pdf_title=?,pdf_description=?,pdf_url=?,pdf_file_name=?,pdf_show_open=?,pdf_show_download=?,experience_json=?,education_json=?,skills_json=?,updated_at=? WHERE id=1').run(v.profile||'',v.availability||'',v.location||'',v.email||'',v.pdf_enabled?1:0,v.pdf_kicker||'',v.pdf_title||'',v.pdf_description||'',v.pdf_url||'',v.pdf_file_name||'',v.pdf_show_open?1:0,v.pdf_show_download?1:0,JSON.stringify(v.experience||[]),JSON.stringify(v.education||[]),JSON.stringify(v.skills||[]),now()); json(res,resume()); });
+app.put('/api/admin/content', (req,res,next)=>{try{const value=validateContent(req.body);const ids=new Set(db.prepare('SELECT id FROM works').all().map(w=>w.id));for(const item of [...value.hero.cards,...value.extension.items,...value.projects])if(item.workId&&!ids.has(item.workId))throw error(400,'关联作品已删除，请重新选择或移除对应条目');db.prepare('INSERT INTO page_content(id,content_json,updated_at) VALUES(1,?,?) ON CONFLICT(id) DO UPDATE SET content_json=excluded.content_json,updated_at=excluded.updated_at').run(JSON.stringify(value),now());json(res,value)}catch(e){next(e)}});
 app.put('/api/admin/settings', (req, res) => { const v=req.body; db.prepare('UPDATE site_settings SET name=?,role=?,hero_prefix=?,hero_emphasis=?,hero_suffix=?,hero_description=?,hero_video_url=?,email=?,location=?,updated_at=? WHERE id=1').run(v.name||'',v.role||'',v.hero_prefix||'',v.hero_emphasis||'',v.hero_suffix||'',v.hero_description||'',v.hero_video_url||'',v.email||'',v.location||'',now()); json(res,v); });
 app.put('/api/admin/avatar', (req, res, next) => { try {
   const v=req.body||{};
@@ -420,7 +437,7 @@ app.put('/api/admin/avatar', (req, res, next) => { try {
   json(res,avatar(true));
 } catch(e){ next(e); } });
 app.post('/api/admin/upload', upload.single('file'), (req, res, next) => { try { if (!req.file) throw error(400, '请上传 JPG、PNG、WebP、GIF、MP4 或 PDF 文件。'); const key=path.basename(req.file.filename); db.prepare('INSERT INTO media (id,object_key,name,content_type,size) VALUES (?,?,?,?,?)').run(uid(),key,req.file.originalname,req.file.mimetype,req.file.size); json(res,{id:db.prepare('SELECT id FROM media WHERE object_key=?').get(key).id,key,name:req.file.originalname,url:`/uploads/${encodeURIComponent(key)}`,content_type:req.file.mimetype,size:req.file.size},201); } catch(e) { if(req.file) fs.rmSync(req.file.path,{force:true}); next(e); } });
-app.delete('/api/admin/media/:id', (req, res, next) => { try { const item=db.prepare('SELECT * FROM media WHERE id=?').get(req.params.id); if(!item) throw error(404,'没有找到这个媒体文件。'); const mediaUrl=`/uploads/${encodeURIComponent(item.object_key)}`; const refs=db.prepare(`SELECT (SELECT COUNT(*) FROM posts WHERE cover_url=? OR video_url=? OR instr(body,?)>0)+(SELECT COUNT(*) FROM works WHERE cover_url=? OR showcase_url=?)+(SELECT COUNT(*) FROM site_settings WHERE hero_video_url=?)+(SELECT COUNT(*) FROM resume WHERE pdf_url=?) AS count`).get(mediaUrl,mediaUrl,mediaUrl,mediaUrl,mediaUrl,mediaUrl,mediaUrl); if(Number(refs.count)>0) throw error(409,'这个素材正在被文章、作品、简历或首页使用，请先从内容中移除后再删除。'); fs.rmSync(path.join(uploadDir,item.object_key),{force:true}); db.prepare('DELETE FROM media WHERE id=?').run(req.params.id); json(res,{ok:true}); } catch(e) { next(e); } });
+app.delete('/api/admin/media/:id', (req, res, next) => { try { const item=db.prepare('SELECT * FROM media WHERE id=?').get(req.params.id); if(!item) throw error(404,'没有找到这个媒体文件。'); const mediaUrl=`/uploads/${encodeURIComponent(item.object_key)}`; const refs=db.prepare(`SELECT (SELECT COUNT(*) FROM posts WHERE cover_url=? OR video_url=? OR instr(body,?)>0)+(SELECT COUNT(*) FROM works WHERE cover_url=? OR showcase_url=?)+(SELECT COUNT(*) FROM site_settings WHERE hero_video_url=?)+(SELECT COUNT(*) FROM resume WHERE pdf_url=?) AS count`).get(mediaUrl,mediaUrl,mediaUrl,mediaUrl,mediaUrl,mediaUrl,mediaUrl); if(Number(refs.count)>0 || JSON.stringify(pageContent()).includes(mediaUrl)) throw error(409,'这个素材正在被文章、作品、简历或首页使用，请先从内容中移除后再删除。'); fs.rmSync(path.join(uploadDir,item.object_key),{force:true}); db.prepare('DELETE FROM media WHERE id=?').run(req.params.id); json(res,{ok:true}); } catch(e) { next(e); } });
 app.delete('/api/admin/contacts/:id', (req, res, next) => { try { const result=db.prepare('DELETE FROM contacts WHERE id=?').run(req.params.id); if(!result.changes) throw error(404,'没有找到这条联系记录。'); json(res,{ok:true}); } catch(e){ next(e); } });
 
 const clientDir = path.join(root, 'dist', 'client');

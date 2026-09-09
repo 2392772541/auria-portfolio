@@ -1,0 +1,491 @@
+{
+  "hero": {
+    "logo": "xiaoY",
+    "title": "XIAOYANG",
+    "subtitle": "PORTFOLIO",
+    "signature": "XiaoYang",
+    "kicker": "视觉系统 · AI 工作流",
+    "description": "用视觉系统与 AI 工作流，让品牌内容更快、更准、更有辨识度。",
+    "videoUrl": "",
+    "cards": [
+      {
+        "imageUrl": "/xiaoyang-card-final-1.jpg",
+        "workId": "",
+        "enabled": true
+      },
+      {
+        "imageUrl": "/xiaoyang-card-final-2.jpg",
+        "workId": "",
+        "enabled": true
+      },
+      {
+        "imageUrl": "/xiaoyang-card-final-3.jpg",
+        "workId": "",
+        "enabled": true
+      },
+      {
+        "imageUrl": "/xiaoyang-card-final-4.jpg",
+        "workId": "",
+        "enabled": true
+      },
+      {
+        "imageUrl": "/xiaoyang-card-final-5.jpg",
+        "workId": "",
+        "enabled": true
+      },
+      {
+        "imageUrl": "/xiaoyang-card-final-6.jpg",
+        "workId": "",
+        "enabled": true
+      },
+      {
+        "imageUrl": "/xiaoyang-card-final-7.jpg",
+        "workId": "",
+        "enabled": true
+      },
+      {
+        "imageUrl": "/xiaoyang-card-final-8.jpg",
+        "workId": "",
+        "enabled": true
+      }
+    ]
+  },
+  "experience": {
+    "enabled": true,
+    "title": "Hi, I am XiaoYang!",
+    "portraitUrl": "/xiaoyang-portrait-reference.jpg",
+    "lead": "视觉设计师，擅长把需求整理成",
+    "emphasis": "清晰、可执行的视觉结果。",
+    "description": "拥有多年视觉设计、品牌与 AI 工作流经验，擅长把复杂信息整理成清晰、可复用、可持续迭代的系统。",
+    "metrics": [
+      {
+        "value": "3+",
+        "label": "年专业经验"
+      },
+      {
+        "value": "500+",
+        "label": "内容与页面资产"
+      },
+      {
+        "value": "95%+",
+        "label": "客户满意度"
+      },
+      {
+        "value": "20%+",
+        "label": "迭代效率提升"
+      }
+    ],
+    "career": [
+      {
+        "period": "2016",
+        "title": "视觉设计起步",
+        "current": false
+      },
+      {
+        "period": "2019",
+        "title": "品牌与产品设计",
+        "current": false
+      },
+      {
+        "period": "2023",
+        "title": "AI 工作流与内容系统",
+        "current": true
+      },
+      {
+        "period": "NOW",
+        "title": "独立创作与合作",
+        "current": false
+      }
+    ]
+  },
+  "showcase": {
+    "enabled": true,
+    "title": "Demo展示",
+    "subtitle": "从想法到产品 · 用设计与技术落地真实价值",
+    "english": "FROM IDEAS TO IMPACT · REAL PRODUCTS, REAL VALUE"
+  },
+  "capability": {
+    "enabled": true,
+    "title": "能力矩阵",
+    "subtitle": "从想法到落地，覆盖 AI 应用的全链路能力",
+    "items": [
+      {
+        "icon": "panels",
+        "title": "产品设计",
+        "copy": "需求分析、功能拆解、原型设计、PRD 撰写"
+      },
+      {
+        "icon": "search",
+        "title": "RAG",
+        "copy": "文档分块、Query 改写、混合检索、融合与重排"
+      },
+      {
+        "icon": "network",
+        "title": "AGENT",
+        "copy": "多智能体编排、Workflow 搭建、工具调用、状态管理与记忆"
+      },
+      {
+        "icon": "code",
+        "title": "Prompt 工程",
+        "copy": "角色设定、任务拆解、Few-shot、输出约束与评测"
+      },
+      {
+        "icon": "brain",
+        "title": "LLM 认知",
+        "copy": "模型能力边界、上下文工程、SFT 与人机协作机制"
+      },
+      {
+        "icon": "boxes",
+        "title": "全栈开发",
+        "copy": "MVP 前后端开发、系统设计、部署与持续迭代"
+      },
+      {
+        "icon": "workflow",
+        "title": "数据准备与评测",
+        "copy": "数据标注、测试集设计、失败分类与版本对比"
+      },
+      {
+        "icon": "chart",
+        "title": "数据分析",
+        "copy": "数据清洗、统计分析、指标设计与结果可视化"
+      }
+    ]
+  },
+  "highlight": {
+    "enabled": true,
+    "title": "其他亮点",
+    "subtitle": "持续把想法做成可用产品",
+    "items": [
+      {
+        "lead": "完成 KOLPilot 可点击 MVP 与 ",
+        "emphasis": "13 项",
+        "tail": "端到端验收，保留完整人机决策边界",
+        "placeholder": false
+      },
+      {
+        "lead": "已公开并部署 ",
+        "emphasis": "3 个",
+        "tail": "AI 产品作品，独立放在开源项目页面持续迭代",
+        "placeholder": false
+      },
+      {
+        "lead": "代表性真实经历与量化成果：",
+        "emphasis": "待补充",
+        "tail": "（已预留展示位置）",
+        "placeholder": true
+      },
+      {
+        "lead": "行业奖项、证书或公开认可：",
+        "emphasis": "待补充",
+        "tail": "（已预留展示位置）",
+        "placeholder": true
+      },
+      {
+        "lead": "论文、文章或公开分享：",
+        "emphasis": "待补充",
+        "tail": "（已预留展示位置）",
+        "placeholder": true
+      }
+    ]
+  },
+  "extension": {
+    "enabled": true,
+    "title": "个人延伸",
+    "subtitle": "把兴趣变成可落地的探索",
+    "english": "EXPLORATION BEYOND WORK",
+    "description": "在真实项目与产品 Demo 之外，我持续整理调研、界面、技术实验与空间观察，让分析、视觉表达和技术理解相互连接，探索 AI 在工作与生活中的更多可能。",
+    "items": [
+      {
+        "id": "extension-work-1",
+        "kind": "work",
+        "workId": "",
+        "title": "",
+        "kicker": "",
+        "summary": "",
+        "imageUrl": "/xiaoyang-card-final-1.jpg",
+        "url": "",
+        "enabled": true
+      },
+      {
+        "id": "pond-experiment",
+        "kind": "pond",
+        "workId": "",
+        "title": "一方池塘",
+        "kicker": "INTERACTIVE / 交互实验",
+        "summary": "点一下，放一条鱼。让水光与游鱼陪你放空片刻。",
+        "imageUrl": "/pond/cover.svg",
+        "url": "",
+        "enabled": true
+      },
+      {
+        "id": "extension-work-2",
+        "kind": "work",
+        "workId": "",
+        "title": "",
+        "kicker": "",
+        "summary": "",
+        "imageUrl": "/xiaoyang-card-final-2.jpg",
+        "url": "",
+        "enabled": true
+      },
+      {
+        "id": "extension-work-3",
+        "kind": "work",
+        "workId": "",
+        "title": "",
+        "kicker": "",
+        "summary": "",
+        "imageUrl": "/xiaoyang-card-final-3.jpg",
+        "url": "",
+        "enabled": true
+      },
+      {
+        "id": "extension-work-4",
+        "kind": "work",
+        "workId": "",
+        "title": "",
+        "kicker": "",
+        "summary": "",
+        "imageUrl": "/xiaoyang-card-final-4.jpg",
+        "url": "",
+        "enabled": true
+      },
+      {
+        "id": "extension-work-5",
+        "kind": "work",
+        "workId": "",
+        "title": "",
+        "kicker": "",
+        "summary": "",
+        "imageUrl": "/xiaoyang-card-final-5.jpg",
+        "url": "",
+        "enabled": true
+      },
+      {
+        "id": "extension-work-6",
+        "kind": "work",
+        "workId": "",
+        "title": "",
+        "kicker": "",
+        "summary": "",
+        "imageUrl": "/xiaoyang-card-final-6.jpg",
+        "url": "",
+        "enabled": true
+      },
+      {
+        "id": "extension-work-7",
+        "kind": "work",
+        "workId": "",
+        "title": "",
+        "kicker": "",
+        "summary": "",
+        "imageUrl": "/xiaoyang-card-final-7.jpg",
+        "url": "",
+        "enabled": true
+      }
+    ]
+  },
+  "strengths": {
+    "enabled": true,
+    "title": "CORE STRENGTHS",
+    "subtitle": "让视觉、策略与执行，在一个系统里协同。",
+    "tags": [
+      "Strategy",
+      "Visual",
+      "AI"
+    ],
+    "items": [
+      {
+        "title": "商业设计思维",
+        "description": "不止于审美表达，更关注目标、平台规范与最终落地效果。",
+        "imageUrl": "/strength-art-1.jpg"
+      },
+      {
+        "title": "品牌视觉系统",
+        "description": "把品牌语言、组件与内容组织成一套一致的视觉体验。",
+        "imageUrl": "/strength-art-2.jpg"
+      },
+      {
+        "title": "高效协作交付",
+        "description": "明确边界、节奏与反馈，让复杂项目持续向前推进。",
+        "imageUrl": ""
+      },
+      {
+        "title": "趋势与风格迭代",
+        "description": "持续观察设计趋势、媒介变化与用户偏好，保持表达新鲜。",
+        "imageUrl": ""
+      }
+    ]
+  },
+  "projects": [
+    {
+      "workId": "",
+      "slug": "kolpilot-ai-creator-decision",
+      "videoSrc": "/kolpilot-product-demo.mp4",
+      "demoUrl": "",
+      "demoLabel": "站内完整案例",
+      "accessCode": "无需体验码",
+      "note": "本项目使用演示数据与 Mock AI，未声称真实客户商业业绩。",
+      "metrics": [
+        {
+          "value": "13 项",
+          "label": "端到端验收",
+          "placeholder": false
+        },
+        {
+          "value": "Human",
+          "label": "关键节点确认",
+          "placeholder": false
+        },
+        {
+          "value": "可解释",
+          "label": "匹配证据链",
+          "placeholder": false
+        }
+      ],
+      "chapters": [
+        {
+          "seconds": 0,
+          "time": "00:00",
+          "label": "产品定位",
+          "placeholder": false
+        },
+        {
+          "seconds": 25,
+          "time": "00:25",
+          "label": "创建 Campaign",
+          "placeholder": false
+        },
+        {
+          "seconds": 70,
+          "time": "01:10",
+          "label": "可解释匹配",
+          "placeholder": false
+        },
+        {
+          "seconds": 120,
+          "time": "02:00",
+          "label": "Shortlist 决策",
+          "placeholder": false
+        },
+        {
+          "seconds": 155,
+          "time": "02:35",
+          "label": "建联审批",
+          "placeholder": false
+        },
+        {
+          "seconds": 190,
+          "time": "03:10",
+          "label": "效果反馈",
+          "placeholder": false
+        },
+        {
+          "seconds": 215,
+          "time": "03:35",
+          "label": "总结",
+          "placeholder": false
+        }
+      ]
+    }
+  ],
+  "openSource": {
+    "title": "可以打开、运行，也可以继续迭代。",
+    "description": "这里仅收录已经公开仓库并可在线体验的独立项目，与工作案例分开。仓库持续更新，个站通过固定截图路径同步最新项目封面。",
+    "items": [
+      {
+        "slug": "roleproof",
+        "name": "RoleProof",
+        "productName": "AI 求职证据工作台",
+        "positioning": "把岗位要求、个人经历与可验证证据组织成一条可审查的求职决策链。",
+        "summary": "重点不是自动生成一份漂亮简历，而是让每条能力判断都能回到经历证据，并把最终表达留给用户确认。",
+        "proof": [
+          "可运行 GitHub Pages Demo",
+          "证据驱动的岗位匹配",
+          "人工确认最终叙事"
+        ],
+        "stack": [
+          "React",
+          "TypeScript",
+          "Evidence UX"
+        ],
+        "coverUrl": "https://raw.githubusercontent.com/2392772541/roleproof/main/docs/roleproof-overview.png",
+        "repositoryUrl": "https://github.com/2392772541/roleproof",
+        "demoUrl": "https://2392772541.github.io/roleproof/",
+        "accent": "lime",
+        "enabled": true
+      },
+      {
+        "slug": "flowerops-ai",
+        "name": "FlowerOps",
+        "productName": "AI 花店运营工作台",
+        "positioning": "将花店的订单、库存、客户沟通和运营判断收拢到同一套可执行工作流。",
+        "summary": "用合成数据验证日常运营路径，明确 AI 建议与人工经营判断的边界，不声称真实门店商业业绩。",
+        "proof": [
+          "可运行 GitHub Pages Demo",
+          "完整运营工作流",
+          "合成数据与边界标注"
+        ],
+        "stack": [
+          "React",
+          "Operations",
+          "Human-in-the-loop"
+        ],
+        "coverUrl": "https://raw.githubusercontent.com/2392772541/flowerops-ai/main/docs/images/dashboard.png",
+        "repositoryUrl": "https://github.com/2392772541/flowerops-ai",
+        "demoUrl": "https://2392772541.github.io/flowerops-ai/",
+        "accent": "yellow",
+        "enabled": true
+      },
+      {
+        "slug": "signaldesk",
+        "name": "SignalDesk",
+        "productName": "AI 情报研判工作台",
+        "positioning": "把分散信号、证据强度与人工研判组织成可追踪的情报决策界面。",
+        "summary": "展示从信息收集到判断输出的完整链路，避免把模型置信度包装成事实，让关键结论保留来源与责任人。",
+        "proof": [
+          "可运行 GitHub Pages Demo",
+          "来源与证据强度可追踪",
+          "关键结论人工复核"
+        ],
+        "stack": [
+          "React",
+          "Intelligence UX",
+          "Traceability"
+        ],
+        "coverUrl": "https://raw.githubusercontent.com/2392772541/signaldesk-ai-intelligence-workbench/main/docs/screenshots/command-center-desktop.png",
+        "repositoryUrl": "https://github.com/2392772541/signaldesk-ai-intelligence-workbench",
+        "demoUrl": "https://2392772541.github.io/signaldesk-ai-intelligence-workbench/",
+        "accent": "blue",
+        "enabled": true
+      }
+    ]
+  },
+  "pages": {
+    "writingTitle": "把每一次实践，沉淀成下一次判断。",
+    "writingDescription": "关于产品经理、智能体、工作流和 AI 自动化的持续记录。",
+    "homeWritingTitle": "把思考变成可复用的认知资产。",
+    "aboutTitle": "我在意的不是把 AI 做出来。",
+    "aboutMethod": "从用户问题开始，经过产品判断、体验设计，最后落到可交付的系统。",
+    "aboutPoints": [
+      {
+        "title": "产品判断",
+        "description": "把模糊需求拆成用户、场景、决策和结果。"
+      },
+      {
+        "title": "系统设计",
+        "description": "让人和模型在清晰边界内共同完成工作。"
+      },
+      {
+        "title": "持续验证",
+        "description": "用真实反馈而不是漂亮演示判断产品价值。"
+      }
+    ],
+    "contactTitle": "说说你的产品问题。",
+    "contactDescription": "不需要准备一份完整的需求文档。告诉我你正在做什么、卡在哪里，以及你希望下一步发生什么。",
+    "contactLead": "有一个值得用 AI 解决的问题？",
+    "cooperation": "Visual / Brand / AI Design",
+    "phone": "",
+    "footerLead": "一起把一个想法做得更清楚。"
+  }
+}

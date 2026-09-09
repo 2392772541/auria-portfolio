@@ -19,7 +19,8 @@
     "test:pdf-embed": "node scripts/test-pdf-embed.mjs",
     "test:pdf-recovery": "node scripts/test-pdf-recovery.mjs",
     "test:wechat": "node scripts/test-wechat-preview.mjs",
-    "test:work-showcase": "node scripts/test-work-showcase.mjs"
+    "test:work-showcase": "node scripts/test-work-showcase.mjs",
+    "test:cms": "node scripts/test-cms-integration.mjs"
   },
   "dependencies": {
     "@tiptap/extension-image": "^3.30.2",

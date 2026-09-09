@@ -57,8 +57,8 @@ function assertReferenceStructure() {
   assert.equal((showcaseDataSource.match(/tail: .*placeholder:/g) || []).length, 5, 'highlights should retain five rows');
   assert.ok(portfolioSource.includes('export function OpenSourcePage'), 'open-source projects should remain on a separate page');
   assert.ok(portfolioSource.includes('export function ShowcaseContentSections'), 'the three showcase sections should be exported as one shared component');
-  assert.ok(portfolioSource.includes('<ShowcaseContentSections data={data} initialSlug={focusSlug}/>'), 'the work page should render the shared showcase component with deep-link selection');
-  assert.ok(appSource.includes('<ShowcaseContentSections data={data}/>'), 'the homepage should render the same shared showcase component');
+  assert.ok(portfolioSource.includes('<ShowcaseContentSections data={data} initialSlug={focusSlug||hashSlug}/>'), 'the work page should render the shared showcase component with deep-link selection');
+  assert.ok(appSource.includes('<OrbitShowcase works={data.works}/>') && appSource.includes('<CapabilityShowcase/>'), 'homepage retains the current orbit layout and capability module');
   assert.ok(appSource.includes('id="selected" className="home-showcase-shell jade-showcase-page"'), 'the replacement should retain the homepage selected anchor and Jade styling scope');
   assert.ok(!appSource.includes('function SelectedWorkShowcase'), 'the replaced Selected Works implementation should be removed');
   assert.ok(!appSource.includes('<SelectedWorkShowcase'), 'the homepage should no longer render the legacy Selected Works block');

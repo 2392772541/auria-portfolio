@@ -1,3 +1,4 @@
+import type {SiteContent} from './siteContent';
 import type { AdminData, AvatarAdminSettings, Post, ResumeData, SiteData, SiteSettings, Work } from './types';
 
 let csrfToken = '';
@@ -51,6 +52,7 @@ export const api = {
   deleteMedia: (id: string) => request<{ ok: true }>(`/api/admin/media/${id}`, { method: 'DELETE' }),
   deleteContact: (id: string) => request<{ ok: true }>(`/api/admin/contacts/${id}`, { method: 'DELETE' }),
   updateResume: (resume: ResumeData) => request<ResumeData>('/api/admin/resume', json('PUT', resume)),
+  updateContent: (content: SiteContent) => request<SiteContent>('/api/admin/content', json('PUT', content)),
   updateSettings: (settings: SiteSettings) => request<SiteSettings>('/api/admin/settings', json('PUT', settings)),
   updateAvatar: (avatar: AvatarAdminSettings) => request<AvatarAdminSettings>('/api/admin/avatar', json('PUT', avatar)),
   upload: async (file: File) => {
