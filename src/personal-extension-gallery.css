@@ -1,4 +1,6 @@
 .home-cyber .personal-extension{--extension-gap:12px;--extension-card:clamp(210px,calc((100vw - 120px)/5),340px);padding:64px 0 28px;border-top:0;background-color:#08130f}
+.home-cyber .personal-extension{background-image:linear-gradient(to bottom,#080f13,transparent 190px),linear-gradient(#dfffcf08 1px,transparent 1px),linear-gradient(90deg,#dfffcf08 1px,transparent 1px);background-size:100% 100%,48px 48px,48px 48px}
+.home-cyber .personal-extension:after{mask-image:linear-gradient(to bottom,transparent,#000 190px)}
 .home-cyber .personal-extension-head{grid-template-columns:1fr minmax(300px,38%);gap:70px;align-items:center;padding:0 5.4%;margin-bottom:8px}
 .home-cyber .personal-extension-head .eyebrow{font-size:10px;letter-spacing:2px;margin:0 0 18px}
 .home-cyber .personal-extension-head h2{font-size:clamp(52px,5.5vw,92px);font-weight:800;line-height:1.12;letter-spacing:.025em}
