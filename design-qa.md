@@ -1,5 +1,7 @@
 # Homepage capability matrix reference QA
 
+Superseded: the user cancelled this visual replication on 2026-09-09 and requested a calmer lower-section redesign. See docs/LOWER-SECTION-REDESIGN.md for current scope and verification. The blocked findings below are historical, not the acceptance criteria for the new design.
+
 Source: C:/Users/win10/AppData/Local/Temp/codex-clipboard-04c01c93-c3b8-4db8-b315-609b31627907.png (1674 × 943).
 
 Implementation: http://127.0.0.1:3101/?verify=matrix-v2#showcase-capabilities
