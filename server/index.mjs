@@ -424,6 +424,11 @@ app.delete('/api/admin/media/:id', (req, res, next) => { try { const item=db.pre
 app.delete('/api/admin/contacts/:id', (req, res, next) => { try { const result=db.prepare('DELETE FROM contacts WHERE id=?').run(req.params.id); if(!result.changes) throw error(404,'没有找到这条联系记录。'); json(res,{ok:true}); } catch(e){ next(e); } });
 
 const clientDir = path.join(root, 'dist', 'client');
+app.use('/pond', (req, res, next) => {
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Content-Security-Policy', "frame-ancestors 'self'");
+  next();
+}, express.static(path.join(clientDir, 'pond')));
 app.use(express.static(clientDir, { index: 'index.html' }));
 app.use((req, res, next) => req.path.startsWith('/api/') ? next() : res.sendFile(path.join(clientDir, 'index.html')));
 app.use((err, _req, res, _next) => { const status=err.status || (err instanceof multer.MulterError ? 413 : 500); res.status(status).json({ error: err.message || '系统发生未知错误' }); });
