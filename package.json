@@ -17,6 +17,7 @@
     "content:restore": "node --env-file-if-exists=.env scripts/portable.mjs restore",
     "setup:admin": "node scripts/setup-admin.mjs",
     "test:portable": "node scripts/test-portable.mjs",
+    "test:restored": "node scripts/test-restored-site.mjs",
     "test:avatar": "node scripts/test-digital-avatar.mjs",
     "test:avatar-upstream": "node scripts/test-avatar-upstream-recovery.mjs",
     "test:avatar-ui": "node scripts/test-avatar-ui-regressions.mjs",

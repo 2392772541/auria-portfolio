@@ -14,7 +14,7 @@ const source=new Database(path.join(root,'data/auria.sqlite'),{readonly:true});a
 console.log('Snapshot copied');
 fs.mkdirSync(path.join(temp,'uploads'));for(const file of fs.readdirSync(path.join(root,'data/uploads'))){if(fs.statSync(path.join(root,'data/uploads',file)).isFile())fs.copyFileSync(path.join(root,'data/uploads',file),path.join(temp,'uploads',file))}
 console.log('Uploads copied');
-const copy=new Database(path.join(temp,'auria.sqlite'));copy.prepare('DELETE FROM sessions').run();copy.close();
+const copy=new Database(path.join(temp,'auria.sqlite'));if(copy.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='sessions'").get())copy.prepare('DELETE FROM sessions').run();copy.close();
 console.log('Isolated database ready');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/win10/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const salt=crypto.randomBytes(16).toString('hex'),password=crypto.randomBytes(24).toString('hex'),email='cms-test@example.com';
