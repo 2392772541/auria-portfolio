@@ -28,3 +28,11 @@
   pointer-events:none;
   background:linear-gradient(to bottom,#080f13, #080f1300);
 }
+.home-cyber #selected>.orbit-showcase{
+  background-image:linear-gradient(to bottom,transparent calc(100% - 160px),#080f13),radial-gradient(ellipse at 65% 95%,#173b352f,transparent 48%),linear-gradient(#15343b22 1px,transparent 1px),linear-gradient(90deg,#15343b22 1px,transparent 1px);
+  background-size:100% 100%,auto,38px 38px,38px 38px;
+}
+.home-cyber #selected>.orbit-showcase:after{height:auto;bottom:0;mask-image:linear-gradient(to bottom,#000,transparent 100%)}
+.home-cyber #selected>.orbit-showcase>.orbit-footer,
+.home-cyber #selected>.orbit-showcase>.orbit-dots{position:relative;z-index:1}
+.home-cyber #selected>.orbit-showcase>.orbit-corner{z-index:1}
