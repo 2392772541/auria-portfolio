@@ -28,22 +28,24 @@
     "test:cms": "node scripts/test-cms-integration.mjs"
   },
   "dependencies": {
-    "@tiptap/extension-image": "^3.30.2",
-    "@tiptap/extension-youtube": "^3.30.2",
-    "@tiptap/pm": "^3.30.2",
-    "@tiptap/react": "^3.30.2",
-    "@tiptap/starter-kit": "^3.30.2",
+    "@tiptap/core": "3.31.3",
+    "@tiptap/extension-image": "3.31.3",
+    "@tiptap/extension-youtube": "3.31.3",
+    "@tiptap/pm": "3.31.3",
+    "@tiptap/react": "3.31.3",
+    "@tiptap/starter-kit": "3.31.3",
     "better-sqlite3": "^13.0.3",
     "dompurify": "^3.4.14",
     "express": "^5.2.1",
     "lucide-react": "^1.33.0",
-    "multer": "^2.2.0",
-    "pdfjs-dist": "^5.7.284",
+    "multer": "2.3.0",
+    "pdfjs-dist": "6.3.289",
+    "qs": "6.16.0",
     "react": "19.2.6",
     "react-dom": "19.2.6"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.37.1",
+    "@cloudflare/vite-plugin": "^1.54.6",
     "@cloudflare/workers-types": "^4.20260702.1",
     "@openai/sites-vite-plugin": "0.2.0",
     "@tailwindcss/vite": "4.3.3",
@@ -52,6 +54,9 @@
     "@vitejs/plugin-react": "6.0.2",
     "tailwindcss": "4.3.3",
     "typescript": "5.9.3",
-    "vite": "8.0.13"
+    "vite": "^8.2.2"
+  },
+  "overrides": {
+    "sharp": "0.35.4"
   }
 }

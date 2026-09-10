@@ -33,7 +33,7 @@ try {
   console.log('PASS every restored attachment served byte-for-byte; public resume PDF available');
   const require = createRequire(import.meta.url);
   const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/win10/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-  browser = await chromium.launch({channel: 'chrome', headless: true});
+  browser = await chromium.launch({headless: true, ...(process.env.PLAYWRIGHT_EXECUTABLE_PATH ? {executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH} : {channel: 'chrome'})});
   const page = await browser.newPage({viewport: {width: 1440, height: 1000}});
   const errors = [];page.on('pageerror', e => errors.push(e.message));
   async function revealPage() {
