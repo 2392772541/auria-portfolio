@@ -2,8 +2,6 @@ import {SiteContentContext,defaultSiteContent,useSiteContent} from './siteConten
 import {SiteContentAdmin} from './components/SiteContentAdmin';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDown, ArrowLeft, ArrowRight, Bot, Check, ChevronRight, CircleUserRound, Download, ExternalLink, FileText, FolderKanban, Image, LayoutDashboard, LoaderCircle, Menu, MessageCircle, PenLine, Play, Plus, PanelsTopLeft, RefreshCw, RotateCcw, Save, Search, Send, Settings, Sparkles, Trash2, Upload, X } from 'lucide-react';
-import { GlobalWorkerOptions, getDocument, type PDFDocumentProxy, type RenderTask } from 'pdfjs-dist';
-import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { api } from './api';
 import { OrbitShowcase } from './components/OrbitShowcase';
 import { CapabilityShowcase } from './components/CapabilityShowcase';
@@ -19,7 +17,7 @@ declare module 'react' { interface HTMLAttributes<T> { x?: string; y?: string } 
 import { AboutPage, ContactPage as PortfolioContactPage, DetailPage, NotFoundPage, OpenSourcePage, PostPage, ShowcaseContentSections, WorkPage, WritingPage } from './pages/PortfolioPages';
 
 const RichTextEditor=lazy(()=>import('./RichTextEditor').then(module=>({default:module.RichTextEditor})));
-GlobalWorkerOptions.workerSrc=pdfWorkerUrl;
+const PdfCanvasViewer=lazy(()=>import('./components/PdfCanvasViewer'));
 
 const defaultAvatar:AvatarAdminSettings={enabled:true,name:'小羊数字分身',subtitle:'AI PORTFOLIO GUIDE',welcome:'你好，我是小羊的数字分身。你可以问我作品、能力或合作方式。',placeholder:'问问我的作品、能力或合作方式…',suggestions:['你最擅长什么？','介绍一个代表作品','怎么和你合作？'],system_prompt:'你是小羊的个人网站数字分身，用第一人称、自然简洁的中文回答。',knowledge:'',presets:[],max_output_tokens:700};
 const fallback: SiteData = { works: [], posts: [], resume: { profile:'', availability:'', location:'', email:'', pdf_enabled:true, pdf_kicker:'完整简历', pdf_title:'RESUME', pdf_description:'在下方窗口查看完整简历，也可以新窗口打开或下载 PDF。', pdf_url:'', pdf_file_name:'XiaoYang-Resume.pdf', pdf_show_open:true, pdf_show_download:true, experience:[], education:[], skills:[] }, settings: { name:'AI / PORTFOLIO', role:'AI 产品构建者', hero_prefix:'把 AI 变成', hero_emphasis:'真正可用的产品', hero_suffix:'而不只是一场演示。', hero_description:'专注智能体、自动化与知识系统，把模糊想法推进成可衡量、可交付、可持续迭代的产品。', hero_video_url:'', email:'', location:'' }, avatar:defaultAvatar };
@@ -116,85 +114,11 @@ function DigitalAvatar({config}:{config:AvatarSettings}){
   return <section className={`digital-avatar ${open?'is-open':''}`} aria-label={config.name}><button className="digital-avatar-head" type="button" onClick={()=>setOpen(value=>!value)} aria-expanded={open}><span className="digital-avatar-orb"><Bot size={16}/></span><span><b>{config.name}</b><small>{config.subtitle}</small></span><span className={`digital-avatar-status is-${statusState}`} aria-live="polite"><i/> {statusLabel}</span>{open?<X size={16}/>:<MessageCircle size={17}/>}</button>{open?<div className="digital-avatar-panel"><div className="digital-avatar-messages" ref={listRef} aria-live="polite">{messages.map((message,index)=><p key={`${message.role}-${index}`} ref={message.role==='assistant'&&index===messages.length-1?assistantMessageRef:undefined} className={message.role}><span>{message.role==='assistant'?'分身':'你'}</span>{message.content}</p>)}{busy&&<p className="assistant thinking"><LoaderCircle className="spin" size={14}/> 正在整理回答…</p>}</div>{error&&<div className="digital-avatar-error" role="alert">{error}<button type="button" onClick={()=>void send(retryQuestion,false)} disabled={!retryQuestion}>重试</button></div>}<form className="digital-avatar-form" onSubmit={event=>{event.preventDefault();void send(input)}}><input value={input} onChange={event=>setInput(event.target.value)} placeholder={config.placeholder} aria-label="向数字分身提问" maxLength={2000} disabled={busy}/><button disabled={busy||!input.trim()} aria-label="发送"><Send size={16}/></button></form><div className="digital-avatar-actions"><div>{config.suggestions.slice(0,3).map(question=><button type="button" key={question} onClick={()=>void send(question)} disabled={busy}>{question}</button>)}</div><button type="button" className="digital-avatar-reset" onClick={()=>{setMessages([{role:'assistant',content:config.welcome}]);setError('')}} title="清空对话" aria-label="清空对话"><RotateCcw size={14}/></button></div></div>:<button className="digital-avatar-entry" type="button" onClick={()=>setOpen(true)}><span>{config.welcome}</span><b>开始对话 <ArrowRight size={14}/></b></button>}</section>;
 }
 
-function XiaoyangHeroComplete({data}:{data:SiteData}){const {hero}=useSiteContent();const [open,setOpen]=useState(false);const [loading,setLoading]=useState(true);const [progress,setProgress]=useState(23);const [activeSection,setActiveSection]=useState('experience');const [pointer,setPointer]=useState({x:0,y:0});useEffect(()=>{const tick=window.setInterval(()=>setProgress(value=>value>=100?100:value+Math.max(2,Math.round((100-value)*.16))),80);const timer=window.setTimeout(()=>setLoading(false),1750);return()=>{window.clearInterval(tick);window.clearTimeout(timer)}},[]);useEffect(()=>{const ids=['experience','selected','strengths','contact'];const sections=ids.map(id=>document.getElementById(id)).filter((x):x is HTMLElement=>Boolean(x));if(!sections.length)return;const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)setActiveSection(entry.target.id)}),{rootMargin:'-35% 0px -55%'});sections.forEach(section=>observer.observe(section));return()=>observer.disconnect()},[]);const cards=hero.cards.filter(x=>x.enabled).map((card,i)=>({asset:card.imageUrl,work:card.workId?data.works.find(w=>w.id===card.workId):data.works[i]})).filter(x=>x.work);return <section className="xiaoyang-hero" id="module" onPointerMove={e=>{const r=e.currentTarget.getBoundingClientRect();setPointer({x:(e.clientX-r.left)/r.width-.5,y:(e.clientY-r.top)/r.height-.5})}} style={{'--mx':`${pointer.x*12}px`,'--my':`${pointer.y*8}px`} as React.CSSProperties}><div className="xiaoyang-backdrop"/>{hero.videoUrl&&<video className="xiaoyang-custom-video" src={hero.videoUrl} autoPlay muted loop playsInline/>}<div className="xiaoyang-night" aria-hidden="true"/><div className="xiaoyang-noise"/><div className={`xiaoyang-loader ${loading?'is-visible':''}`} aria-hidden={!loading}><small>LOADING PORTFOLIO</small><strong>{progress}%</strong><span/></div><nav className="xiaoyang-nav"><a className="xiaoyang-logo" href="/" aria-label="首页"><span className="xiaoyang-face">●</span><b>{hero.logo}</b></a><div className={`xiaoyang-navlinks ${open?'is-open':''}`}><a className={activeSection==='experience'?'is-active':''} href="#experience" onClick={()=>setOpen(false)}>工作经历</a><a className={activeSection==='selected'?'is-active':''} href="#selected" onClick={()=>setOpen(false)}>精选作品</a><a className={activeSection==='strengths'?'is-active':''} href="#strengths" onClick={()=>setOpen(false)}>个人优势</a><a className={`xiaoyang-contact ${activeSection==='contact'?'is-active':''}`} href="#contact" onClick={()=>setOpen(false)}>联系我</a></div><button className="xiaoyang-menu" onClick={()=>setOpen(!open)} aria-label={open?'关闭菜单':'打开菜单'} aria-expanded={open}>{open?<X size={20}/>:<Menu size={20}/>}</button></nav><div className="xiaoyang-intro"><p className="xiaoyang-kicker">{hero.kicker}</p><h1>{hero.title}<span>✦</span></h1><h2>{hero.subtitle} <em>{hero.signature}</em></h2><p className="xiaoyang-tagline">{hero.description}</p><DigitalAvatar config={data.avatar}/></div><div className="xiaoyang-strip-window" aria-label="精选作品预览"><div className="xiaoyang-strip">{[0,1].map(group=><div key={group} className="xiaoyang-strip-set" aria-hidden={group===1}>{cards.map(({asset,work},itemIndex)=>{const title=work?.title||`作品 ${itemIndex+1}`;return <a key={`${group}-${asset}`} href={work?.slug?workShowcaseHref(work.slug):'/?page=work'} className={`xiaoyang-card rhythm-${itemIndex%3}`} data-light-surface="" aria-label={`${String(itemIndex+1).padStart(2,'0')} ${title}`} tabIndex={group===1?-1:0}><SurfaceLight/><img src={asset||work?.cover_url} alt={group===0?title:''}/><span className="xiaoyang-card-index">{String(itemIndex+1).padStart(2,'0')}</span><span className="xiaoyang-card-copy"><b>{title}</b><small>{work?.kicker||'SELECTED WORK'}</small></span></a>})}</div>)}</div></div><div className="xiaoyang-scroll">SCROLL TO EXPLORE <ArrowDown size={13}/></div></section>}
+function XiaoyangHeroComplete({data}:{data:SiteData}){const {hero}=useSiteContent();const [open,setOpen]=useState(false);const [activeSection,setActiveSection]=useState('experience');const [pointer,setPointer]=useState({x:0,y:0});useEffect(()=>{const ids=['experience','selected','strengths','contact'];const sections=ids.map(id=>document.getElementById(id)).filter((x):x is HTMLElement=>Boolean(x));if(!sections.length)return;const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)setActiveSection(entry.target.id)}),{rootMargin:'-35% 0px -55%'});sections.forEach(section=>observer.observe(section));return()=>observer.disconnect()},[]);const cards=hero.cards.filter(x=>x.enabled).map((card,i)=>({asset:card.imageUrl,work:card.workId?data.works.find(w=>w.id===card.workId):data.works[i]})).filter(x=>x.work);return <section className="xiaoyang-hero" id="module" onPointerMove={e=>{const r=e.currentTarget.getBoundingClientRect();setPointer({x:(e.clientX-r.left)/r.width-.5,y:(e.clientY-r.top)/r.height-.5})}} style={{'--mx':`${pointer.x*12}px`,'--my':`${pointer.y*8}px`} as React.CSSProperties}><div className="xiaoyang-backdrop"/>{hero.videoUrl&&<video className="xiaoyang-custom-video" src={hero.videoUrl} autoPlay muted loop playsInline/>}<div className="xiaoyang-night" aria-hidden="true"/><div className="xiaoyang-noise"/><nav className="xiaoyang-nav"><a className="xiaoyang-logo" href="/" aria-label="首页"><span className="xiaoyang-face">●</span><b>{hero.logo}</b></a><div className={`xiaoyang-navlinks ${open?'is-open':''}`}><a className={activeSection==='experience'?'is-active':''} href="#experience" onClick={()=>setOpen(false)}>工作经历</a><a className={activeSection==='selected'?'is-active':''} href="#selected" onClick={()=>setOpen(false)}>精选作品</a><a className={activeSection==='strengths'?'is-active':''} href="#strengths" onClick={()=>setOpen(false)}>个人优势</a><a className={`xiaoyang-contact ${activeSection==='contact'?'is-active':''}`} href="#contact" onClick={()=>setOpen(false)}>联系我</a></div><button className="xiaoyang-menu" onClick={()=>setOpen(!open)} aria-label={open?'关闭菜单':'打开菜单'} aria-expanded={open}>{open?<X size={20}/>:<Menu size={20}/>}</button></nav><div className="xiaoyang-intro"><p className="xiaoyang-kicker">{hero.kicker}</p><h1>{hero.title}<span>✦</span></h1><h2>{hero.subtitle} <em>{hero.signature}</em></h2><p className="xiaoyang-tagline">{hero.description}</p><DigitalAvatar config={data.avatar}/></div><div className="xiaoyang-strip-window" aria-label="精选作品预览"><div className="xiaoyang-strip">{[0,1].map(group=><div key={group} className="xiaoyang-strip-set" aria-hidden={group===1}>{cards.map(({asset,work},itemIndex)=>{const title=work?.title||`作品 ${itemIndex+1}`;return <a key={`${group}-${asset}`} href={work?.slug?workShowcaseHref(work.slug):'/?page=work'} className={`xiaoyang-card rhythm-${itemIndex%3}`} data-light-surface="" aria-label={`${String(itemIndex+1).padStart(2,'0')} ${title}`} tabIndex={group===1?-1:0}><SurfaceLight/><img src={asset||work?.cover_url} alt={group===0?title:''}/><span className="xiaoyang-card-index">{String(itemIndex+1).padStart(2,'0')}</span><span className="xiaoyang-card-copy"><b>{title}</b><small>{work?.kicker||'SELECTED WORK'}</small></span></a>})}</div>)}</div></div><div className="xiaoyang-scroll">SCROLL TO EXPLORE <ArrowDown size={13}/></div></section>}
 
 function ScrollProgress(){useEffect(()=>{const update=()=>{const max=document.documentElement.scrollHeight-window.innerHeight;document.documentElement.style.setProperty('--xiao-scroll',String(max>0?window.scrollY/max:0))};update();addEventListener('scroll',update,{passive:true});addEventListener('resize',update);return()=>{removeEventListener('scroll',update);removeEventListener('resize',update)}},[]);return <div className="xiao-progress" aria-hidden="true"><span/></div>}
 function SiteLoading(){const [progress,setProgress]=useState(23);useEffect(()=>{const timer=window.setInterval(()=>setProgress(value=>value>=100?100:value+Math.max(3,Math.round((100-value)*.18))),70);return()=>window.clearInterval(timer)},[]);return <main className="site-loading" role="status" aria-live="polite"><div className="site-loading-mark"><span className="xiaoyang-face">●</span><b>xiaoY</b></div><p>LOADING PORTFOLIO</p><strong>{progress}%</strong><span className="site-loading-line"/></main>}
 function HashAnchorSync(){useEffect(()=>{const hash=window.location.hash;if(!hash)return;const target=document.getElementById(decodeURIComponent(hash.slice(1)));if(!target)return;const frame=window.requestAnimationFrame(()=>target.scrollIntoView({block:'start'}));return()=>window.cancelAnimationFrame(frame)},[]);return null}
-
-function PdfCanvasViewer({url,onReady,onFailure}:{url:string;onReady:()=>void;onFailure:()=>void}){
-  const containerRef=useRef<HTMLDivElement>(null);
-  useEffect(()=>{
-    const container=containerRef.current;
-    if(!container)return;
-    let cancelled=false;
-    let documentTask:ReturnType<typeof getDocument>|undefined;
-    let pdfDocument:PDFDocumentProxy|undefined;
-    let renderTasks:RenderTask[]=[];
-    let resizeTimer:number|undefined;
-    let rendering=false;
-    const renderDocument=async()=>{
-      if(!pdfDocument||cancelled||rendering)return;
-      rendering=true;
-      try{
-        renderTasks.forEach(task=>task.cancel());
-        renderTasks=[];
-        container.replaceChildren();
-        const availableWidth=Math.max(280,Math.min(container.clientWidth-48,980));
-        const pixelRatio=Math.min(window.devicePixelRatio||1,2);
-        for(let pageNumber=1;pageNumber<=pdfDocument.numPages;pageNumber+=1){
-          if(cancelled)return;
-          const page=await pdfDocument.getPage(pageNumber);
-          const baseViewport=page.getViewport({scale:1});
-          const cssScale=availableWidth/baseViewport.width;
-          const viewport=page.getViewport({scale:cssScale*pixelRatio});
-          const pageElement=document.createElement('figure');
-          pageElement.className='resume-pdf-page';
-          pageElement.setAttribute('aria-label',`简历第 ${pageNumber} 页，共 ${pdfDocument.numPages} 页`);
-          const canvas=document.createElement('canvas');
-          canvas.width=Math.ceil(viewport.width);
-          canvas.height=Math.ceil(viewport.height);
-          canvas.style.width=`${Math.round(viewport.width/pixelRatio)}px`;
-          canvas.style.height=`${Math.round(viewport.height/pixelRatio)}px`;
-          const context=canvas.getContext('2d',{alpha:false});
-          if(!context)throw new Error('Canvas 2D context unavailable');
-          pageElement.appendChild(canvas);
-          container.appendChild(pageElement);
-          const renderTask=page.render({canvas,canvasContext:context,viewport});
-          renderTasks.push(renderTask);
-          await renderTask.promise;
-        }
-        if(!cancelled)onReady();
-      }finally{rendering=false}
-    };
-    const load=async()=>{
-      try{
-        documentTask=getDocument({url,withCredentials:false});
-        pdfDocument=await documentTask.promise;
-        await renderDocument();
-      }catch(error){
-        if(cancelled||error instanceof Error&&error.name==='RenderingCancelledException')return;
-        onFailure();
-      }
-    };
-    const observer=new ResizeObserver(()=>{
-      if(!pdfDocument||cancelled)return;
-      if(resizeTimer)window.clearTimeout(resizeTimer);
-      resizeTimer=window.setTimeout(()=>{void renderDocument().catch(onFailure)},180);
-    });
-    observer.observe(container);
-    void load();
-    return()=>{
-      cancelled=true;
-      observer.disconnect();
-      if(resizeTimer)window.clearTimeout(resizeTimer);
-      renderTasks.forEach(task=>task.cancel());
-      void documentTask?.destroy();
-      if(pdfDocument) void pdfDocument.cleanup().catch(()=>{});
-    };
-  },[url,onReady,onFailure]);
-  return <div ref={containerRef} className="resume-pdf-pages" aria-label="简历 PDF 页面"/>;
-}
 
 function ResumePdfModule({resume}:{resume:ResumeData}){return resume.pdf_enabled?<ResumePdfContent resume={resume}/>:null}
 function ResumePdfContent({resume}:{resume:ResumeData}){
@@ -228,7 +152,7 @@ function ResumePdfContent({resume}:{resume:ResumeData}){
   },[]);
   useEffect(()=>()=>{if(retryTimer.current)window.clearTimeout(retryTimer.current)},[]);
   useEffect(()=>{
-    if(!viewerBase){setPdfState('checking');return;}
+    if(!visible||!viewerBase){setPdfState('checking');return;}
     let target:URL;
     try{target=new URL(viewerBase,window.location.href)}catch{setPdfState('waiting');return;}
     if(target.origin!==window.location.origin){setPdfState('ready');return;}
@@ -247,14 +171,14 @@ function ResumePdfContent({resume}:{resume:ResumeData}){
     };
     void probePdf();
     return()=>{cancelled=true};
-  },[viewerBase,reloadToken,scheduleRetry]);
+  },[visible,viewerBase,reloadToken,scheduleRetry]);
   const reloadPdf=useCallback(()=>{
     if(retryTimer.current)window.clearTimeout(retryTimer.current);
     setPdfState('checking');
     setReloadToken(value=>value+1);
   },[]);
   const markReady=useCallback(()=>setPdfState('ready'),[]);
-  return <section ref={sectionRef} id="resume-pdf" className={`resume-pdf-section ${visible?'is-visible':''}`}><div className="resume-pdf-head"><div><p className="eyebrow">{resume.pdf_kicker||'完整简历'}</p><h2 className="section-display">{resume.pdf_title||'RESUME'}</h2></div><p>{resume.pdf_description}</p></div><div className="resume-pdf-window"><div className="resume-pdf-toolbar"><div className="resume-window-dots" aria-hidden="true"><i/><i/><i/></div><div className="resume-file-name"><FileText size={24}/><span>{fileName}</span></div><div className="resume-pdf-actions">{url&&<button type="button" className="resume-pdf-reload" onClick={reloadPdf} aria-label="重新加载简历 PDF"><RefreshCw size={17}/><span>重载</span></button>}{url&&resume.pdf_show_open&&<a href={url} target="_blank" rel="noreferrer" aria-label="在新窗口打开简历"><ExternalLink size={17}/><span>新窗口</span></a>}{url&&resume.pdf_show_download&&<a href={url} download={fileName} aria-label="下载简历 PDF"><Download size={17}/><span>下载</span></a>}</div></div>{url?<div className="resume-pdf-frame-wrap">{(pdfState==='rendering'||pdfState==='ready')&&<PdfCanvasViewer key={viewerUrl} url={viewerUrl} onReady={markReady} onFailure={scheduleRetry}/>} {pdfState!=='ready'&&<div className="resume-pdf-recovery" role="status" aria-live="polite"><LoaderCircle className="spin"/><strong>{pdfState==='waiting'?'正在等待 PDF 服务恢复':pdfState==='rendering'?'正在绘制简历页面':'正在加载简历'}</strong><p>{pdfState==='waiting'?'服务恢复后会自动重新加载，也可以点击下方按钮立即重试。':pdfState==='rendering'?'文件已读取，正在生成清晰的页面预览。':'正在检查文件是否可用，请稍候。'}</p><button type="button" onClick={reloadPdf}><RefreshCw size={16}/> 立即重试</button></div>}</div>:<div className="resume-pdf-empty"><FileText/><strong>完整简历即将上线</strong><p>站长可在后台「简历管理」上传或选择 PDF。</p></div>}</div></section>
+  return <section ref={sectionRef} id="resume-pdf" className={`resume-pdf-section ${visible?'is-visible':''}`}><div className="resume-pdf-head"><div><p className="eyebrow">{resume.pdf_kicker||'完整简历'}</p><h2 className="section-display">{resume.pdf_title||'RESUME'}</h2></div><p>{resume.pdf_description}</p></div><div className="resume-pdf-window"><div className="resume-pdf-toolbar"><div className="resume-window-dots" aria-hidden="true"><i/><i/><i/></div><div className="resume-file-name"><FileText size={24}/><span>{fileName}</span></div><div className="resume-pdf-actions">{url&&<button type="button" className="resume-pdf-reload" onClick={reloadPdf} aria-label="重新加载简历 PDF"><RefreshCw size={17}/><span>重载</span></button>}{url&&resume.pdf_show_open&&<a href={url} target="_blank" rel="noreferrer" aria-label="在新窗口打开简历"><ExternalLink size={17}/><span>新窗口</span></a>}{url&&resume.pdf_show_download&&<a href={url} download={fileName} aria-label="下载简历 PDF"><Download size={17}/><span>下载</span></a>}</div></div>{url?<div className="resume-pdf-frame-wrap">{(pdfState==='rendering'||pdfState==='ready')&&<Suspense fallback={null}><PdfCanvasViewer key={viewerUrl} url={viewerUrl} onReady={markReady} onFailure={scheduleRetry}/></Suspense>} {pdfState!=='ready'&&<div className="resume-pdf-recovery" role="status" aria-live="polite"><LoaderCircle className="spin"/><strong>{pdfState==='waiting'?'正在等待 PDF 服务恢复':pdfState==='rendering'?'正在绘制简历页面':'正在加载简历'}</strong><p>{pdfState==='waiting'?'服务恢复后会自动重新加载，也可以点击下方按钮立即重试。':pdfState==='rendering'?'文件已读取，正在生成清晰的页面预览。':'正在检查文件是否可用，请稍候。'}</p><button type="button" onClick={reloadPdf}><RefreshCw size={16}/> 立即重试</button></div>}</div>:<div className="resume-pdf-empty"><FileText/><strong>完整简历即将上线</strong><p>站长可在后台「简历管理」上传或选择 PDF。</p></div>}</div></section>
 }
 
 function PersonalExtensionGallery({works}:{works:Work[]}){

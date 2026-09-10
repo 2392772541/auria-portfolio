@@ -1,3 +1,4 @@
+import compression from 'compression';
 import express from 'express';
 import {validateContent, defaults as contentDefaults} from '../shared/site-content.mjs';
 import multer from 'multer';
@@ -288,6 +289,8 @@ if(!db.prepare('SELECT id FROM page_content WHERE id=1').get()){
 
 const app = express();
 app.disable('x-powered-by');
+// Compress text responses; leave already-compressed media and streaming responses alone.
+app.use(compression({threshold:1024}));
 app.use((_req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -446,7 +449,8 @@ app.use('/pond', (req, res, next) => {
   res.setHeader('Content-Security-Policy', "frame-ancestors 'self'");
   next();
 }, express.static(path.join(clientDir, 'pond')));
-app.use(express.static(clientDir, { index: 'index.html' }));
+app.use('/assets', express.static(path.join(clientDir,'assets'), {maxAge:'365d',immutable:true}));
+app.use(express.static(clientDir, { index: 'index.html', maxAge:0 }));
 app.use((req, res, next) => req.path.startsWith('/api/') ? next() : res.sendFile(path.join(clientDir, 'index.html')));
 app.use((err, _req, res, _next) => { const status=err.status || (err instanceof multer.MulterError ? 413 : 500); res.status(status).json({ error: err.message || '系统发生未知错误' }); });
 
